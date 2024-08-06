@@ -1,185 +1,169 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
   Image,
-  StyleSheet,
   ScrollView,
+  Button,
 } from "react-native";
+import { Formik, FormikProps, FormikHelpers } from "formik";
+import { validationSchema } from "../utils/formUtils/yup";
 import * as ImagePicker from "expo-image-picker";
+import CustomInput from "../components/form/CustomInput";
+import GenderSelector from "../components/form/GenderSelector";
+
+export interface AnimalFormState {
+  name: string;
+  breed: string;
+  gender: "male" | "female";
+  description: string;
+  color: string[];
+  photos: string[]; // Array to hold photo URLs or file paths
+}
 
 const CreateScreen = () => {
-  const [image, setImage] = useState<any>(null);
-  const [name, setName] = useState("");
-  const [breed, setBreed] = useState("");
-  const [gender, setGender] = useState("male");
-  const [description, setDescription] = useState("");
-  const [color, setColor] = useState("");
-  const [breeds, setBreeds] = useState([]);
-
-  useEffect(() => {
-    // Cinsiyetler ve cinsler için API çağrısı burada yapılabilir.
-    fetchBreeds();
-  }, []);
-
-  const fetchBreeds = async () => {
-    // API çağrısı ile cinsleri al ve setBreeds ile güncelle
-    // Örnek: const response = await fetch('API_URL');
-    // const data = await response.json();
-    // setBreeds(data);
+  const submit = (
+    formstate: AnimalFormState,
+    { resetForm }: FormikHelpers<AnimalFormState>
+  ) => {
+    console.log(formstate);
+    resetForm();
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      const img = result.assets[0].uri;
-      if (img) {
-        setImage(img);
-      }
-    }
-  };
-
-  const handleSubmit = () => {
-    // İlanı gönderme işlemleri burada yapılabilir
-    console.log({ image, name, breed, gender, description, color });
-  };
+  const ErrorMsg: React.FC<{ error: string }> = ({ error }) => (
+    <View style={{ width: "75%" }}>
+      <Text style={{ color: "red", fontSize: 12 }}>{error}</Text>
+    </View>
+  );
 
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.image} />
-        ) : (
-          <Text>Resim Yükle</Text>
-        )}
-      </TouchableOpacity>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Hayvanın ismi"
-        value={name}
-        onChangeText={setName}
-      />
-
-      {/* <Picker
-        selectedValue={breed}
-        style={styles.picker}
-        onValueChange={(itemValue) => setBreed(itemValue)}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    >
+      <Formik
+        initialValues={
+          {
+            name: "",
+            breed: "",
+            gender: "male",
+            description: "",
+            color: [],
+            photos: [],
+          } as AnimalFormState
+        }
+        onSubmit={submit}
+        validationSchema={validationSchema}
       >
-        {breeds.map((b, index) => (
-          <Picker.Item key={index} label={b.name} value={b.id} />
-        ))}
-      </Picker> */}
+        {({
+          handleSubmit,
+          handleChange,
+          errors,
+          touched,
+          setFieldValue,
+          handleBlur,
+          isValid,
+          dirty,
+          values,
+        }: FormikProps<AnimalFormState>) => {
+          const pickImage = async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.Images,
+              allowsEditing: true,
+              aspect: [4, 3],
+              quality: 1,
+            });
 
-      <View style={styles.radioGroup}>
-        <Text>Cinsiyet:</Text>
-        <TouchableOpacity
-          onPress={() => setGender("male")}
-          style={styles.radio}
-        >
-          <Text>Erkek</Text>
-          {gender === "male" && <View style={styles.radioSelected} />}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setGender("female")}
-          style={styles.radio}
-        >
-          <Text>Kız</Text>
-          {gender === "female" && <View style={styles.radioSelected} />}
-        </TouchableOpacity>
-      </View>
+            if (!result.canceled) {
+              const newPhotos = [...values.photos, result.assets[0].uri];
+              setFieldValue("photos", newPhotos);
+            }
+          };
 
-      <TextInput
-        style={[styles.input, styles.description]}
-        placeholder="Açıklama"
-        multiline
-        numberOfLines={4}
-        value={description}
-        onChangeText={setDescription}
-      />
+          return (
+            <View style={{ padding: 20 }}>
+              <CustomInput
+                label="Name"
+                value={values.name}
+                onChangeText={handleChange("name")}
+                placeholder="Animal Name"
+                onBlur={handleBlur("name")}
+                error={touched.name && errors.name}
+              />
 
-      <View style={styles.colorPicker}>
-        <Text>Renk Seçimi:</Text>
-        <TouchableOpacity
-          style={[styles.colorOption, { backgroundColor: "red" }]}
-          onPress={() => setColor("red")}
-        />
-        <TouchableOpacity
-          style={[styles.colorOption, { backgroundColor: "blue" }]}
-          onPress={() => setColor("blue")}
-        />
-        {/* Diğer renk seçeneklerini buraya ekleyebilirsiniz */}
-      </View>
+              <CustomInput
+                label="Breed"
+                value={values.breed}
+                onChangeText={handleChange("breed")}
+                placeholder="Breed"
+                onBlur={handleBlur("breed")}
+                error={touched.breed && errors.breed}
+              />
 
-      <Button title="Gönder" onPress={handleSubmit} />
+              <GenderSelector
+                setFieldValue={setFieldValue}
+                error={touched.gender && errors.gender}
+              />
+
+              <CustomInput
+                label="Description"
+                value={values.description}
+                onChangeText={handleChange("description")}
+                placeholder="Description"
+                onBlur={handleBlur("description")}
+                multiline
+                error={touched.description && errors.description}
+              />
+
+              <View style={{ marginVertical: 10 }}>
+                <Text>Color</Text>
+                <View style={{ flexDirection: "row" }}>
+                  {["red", "blue", "green", "yellow"].map((color) => (
+                    <TouchableOpacity
+                      key={color}
+                      onPress={() => setFieldValue("color", color)}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 15,
+                        backgroundColor: color,
+                        margin: 5,
+                        borderWidth: values.color.includes(color) ? 2 : 0,
+                        borderColor: "black",
+                      }}
+                    />
+                  ))}
+                </View>
+                {touched.color && errors.color && (
+                  <ErrorMsg error={errors.color as string} />
+                )}
+              </View>
+
+              <View style={{ marginVertical: 10 }}>
+                <Text>Photos</Text>
+                {errors.photos && <ErrorMsg error={errors.photos as string} />}
+                {values.photos.map((photo, index) => (
+                  <Image
+                    key={index}
+                    source={{ uri: photo }}
+                    style={{ width: 100, height: 100, margin: 5 }}
+                  />
+                ))}
+                <Button title="Upload Photo" onPress={pickImage} />
+              </View>
+
+              <Button
+                disabled={!isValid || !dirty}
+                title="Submit"
+                onPress={() => handleSubmit()}
+              />
+            </View>
+          );
+        }}
+      </Formik>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  imagePicker: {
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 8,
-    marginBottom: 16,
-  },
-  description: {
-    height: 100,
-    textAlignVertical: "top",
-  },
-  picker: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  radioGroup: {
-    marginBottom: 16,
-  },
-  radio: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  radioSelected: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: "blue",
-    marginLeft: 8,
-  },
-  colorPicker: {
-    flexDirection: "row",
-    marginBottom: 16,
-  },
-  colorOption: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 8,
-  },
-});
 
 export default CreateScreen;
