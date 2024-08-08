@@ -1,9 +1,9 @@
 export type AnimalData = {
-  name: string;
+  title: string;
   age: string;
-  sex: string;
+  gender: string;
   species: string;
-  color: string;
+  colors: string[];
   images: string[];
   contact: string;
   description?: string;

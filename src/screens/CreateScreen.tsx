@@ -2,28 +2,24 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
   Image,
   ScrollView,
   Button,
+  useWindowDimensions,
 } from "react-native";
 import { Formik, FormikProps, FormikHelpers } from "formik";
 import { validationSchema } from "../utils/formUtils/yup";
 import * as ImagePicker from "expo-image-picker";
 import CustomInput from "../components/form/CustomInput";
 import GenderSelector from "../components/form/GenderSelector";
-
-export interface AnimalFormState {
-  name: string;
-  breed: string;
-  gender: "male" | "female";
-  description: string;
-  color: string[];
-  photos: string[]; // Array to hold photo URLs or file paths
-}
+import { AnimalFormState } from "../types/AnimalFormState";
+import ColorSelector from "../components/form/ColorSelector";
+import LottieView from "lottie-react-native";
 
 const CreateScreen = () => {
+
+  const {width:SCREEN_WIDTH, height:SCREEN_HEIGHT} = useWindowDimensions()
+
   const submit = (
     formstate: AnimalFormState,
     { resetForm }: FormikHelpers<AnimalFormState>
@@ -39,17 +35,25 @@ const CreateScreen = () => {
   );
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-    >
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <LottieView
+          source={{
+            uri: "https://lottie.host/430cfe6f-37d9-44b9-b4da-617cd70c96e4/AyDoKjt6xe.json",
+          }}
+          style={{
+            width: SCREEN_WIDTH,
+            height: SCREEN_HEIGHT /2,
+          }}
+          autoPlay
+        />
       <Formik
         initialValues={
           {
-            name: "",
+            title: "",
             breed: "",
             gender: "male",
             description: "",
-            color: [],
+            colors: [],
             photos: [],
           } as AnimalFormState
         }
@@ -82,14 +86,14 @@ const CreateScreen = () => {
           };
 
           return (
-            <View style={{ padding: 20 }}>
+            <View style={{  padding: 5 }}>
               <CustomInput
                 label="Name"
-                value={values.name}
+                value={values.title}
                 onChangeText={handleChange("name")}
                 placeholder="Animal Name"
-                onBlur={handleBlur("name")}
-                error={touched.name && errors.name}
+                onTouchStart={handleBlur("name")}
+                error={touched.title && errors.title}
               />
 
               <CustomInput
@@ -97,7 +101,7 @@ const CreateScreen = () => {
                 value={values.breed}
                 onChangeText={handleChange("breed")}
                 placeholder="Breed"
-                onBlur={handleBlur("breed")}
+                onTouchStart={handleBlur("breed")}
                 error={touched.breed && errors.breed}
               />
 
@@ -111,34 +115,15 @@ const CreateScreen = () => {
                 value={values.description}
                 onChangeText={handleChange("description")}
                 placeholder="Description"
-                onBlur={handleBlur("description")}
+                onTouchStart={handleBlur("description")}
                 multiline
                 error={touched.description && errors.description}
               />
 
-              <View style={{ marginVertical: 10 }}>
-                <Text>Color</Text>
-                <View style={{ flexDirection: "row" }}>
-                  {["red", "blue", "green", "yellow"].map((color) => (
-                    <TouchableOpacity
-                      key={color}
-                      onPress={() => setFieldValue("color", color)}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        borderRadius: 15,
-                        backgroundColor: color,
-                        margin: 5,
-                        borderWidth: values.color.includes(color) ? 2 : 0,
-                        borderColor: "black",
-                      }}
-                    />
-                  ))}
-                </View>
-                {touched.color && errors.color && (
-                  <ErrorMsg error={errors.color as string} />
-                )}
-              </View>
+              <ColorSelector
+                setFieldValue={setFieldValue}
+                error={touched.colors && errors.colors}
+              />
 
               <View style={{ marginVertical: 10 }}>
                 <Text>Photos</Text>
@@ -158,6 +143,7 @@ const CreateScreen = () => {
                 title="Submit"
                 onPress={() => handleSubmit()}
               />
+           
             </View>
           );
         }}

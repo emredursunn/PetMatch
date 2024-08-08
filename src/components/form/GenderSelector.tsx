@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import RadioButton from "./RadioButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FormikErrors } from "formik";
-import { AnimalFormState } from "../../screens/CreateScreen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AnimalFormState } from "../../types/AnimalFormState";
 
 type Props = {
   setFieldValue: (
@@ -22,9 +23,9 @@ const GenderSelector = ({ error, setFieldValue }: Props) => {
   }, [selected]);
 
   return (
-    <>
+    <GestureHandlerRootView>
       <Text>Gender</Text>
-      <View style={{ flexDirection: "row", gap: 12 }}>
+      <View style={{ flexDirection: "row", gap: 12, alignItems:'center' }}>
         <RadioButton
           label="male"
           selectedValue={selected}
@@ -53,7 +54,7 @@ const GenderSelector = ({ error, setFieldValue }: Props) => {
         />
       </View>
       {error && <Text style={styles.error}>{error}</Text>}
-    </>
+    </GestureHandlerRootView>
   );
 };
 

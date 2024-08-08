@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native";
 export default function App() {
   return( 
   <>
-  <StatusBar backgroundColor="rgba(78, 44, 191, 0.42)"/>
+  <StatusBar backgroundColor="transparent"/>
   <SafeAreaView style={{flex:1}}>
   <RootNavigation />
   </SafeAreaView>

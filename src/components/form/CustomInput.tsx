@@ -31,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         style={[styles.input, inputStyle, isFocused && styles.inputFocused]}
         {...props}
         onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
       {error && <Text style={styles.error}>{error}</Text>}
     </View>

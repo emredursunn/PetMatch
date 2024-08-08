@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import CustomBox from "../pet_details/CustomBox";
 
 type Props = {
@@ -20,8 +19,8 @@ const RadioButton = ({
 }: Props) => {
   const isSelected = selectedValue === value;
   return (
-    <View style={{ flexDirection: "row", gap: 8 }}>
-      <TouchableOpacity
+    <View style={{ flexDirection: "row", gap: 8, alignItems:'center' }}>
+      <Pressable
         onPress={() => setSelected(value)}
         style={[styles.radioCircle, isSelected && styles.selected]}
       />

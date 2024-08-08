@@ -11,7 +11,7 @@ type Props = {
 
 const Description = ({ data }: Props) => {
   return (
-    <View style={{ paddingTop: "45%" }}>
+    <View style={{ paddingTop: 20 }}>
       <View
         style={{
           flexDirection: "row",

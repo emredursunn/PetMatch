@@ -1,24 +1,35 @@
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Color } from "../../types/AnimalFormState";
 
 type Props = {
-  color: TextStyle["color"];
-  name: string;
+  color: Color;
+  setSelectedColors: React.Dispatch<React.SetStateAction<Color[]>>;
+  selectedColors: Color[];
 };
 
-const ColorItem = ({ color, name }: Props) => {
+const ColorItem = ({ color, setSelectedColors, selectedColors }: Props) => {
+  const isSelected = selectedColors.includes(color);
+
+  const handleOnPress = () => {
+    if (isSelected) {
+      setSelectedColors(() => selectedColors.filter((c) => c !== color));
+    } else if (selectedColors.length < 2) {
+      setSelectedColors((prev) => [...prev, color]);
+    }
+  };
+
   return (
-    <TouchableOpacity style={[styles.item, { backgroundColor: color }]}>
-      <View style={[styles.item, { backgroundColor: "rgba(0,0,0,0.1)" }]}>
-        <AntDesign name="check" size={15} color={color} />
-      </View>
+    <TouchableOpacity
+      onPress={handleOnPress}
+      style={[styles.item, { backgroundColor: color.code }]}
+    >
+      {isSelected && (
+        <View style={[styles.item ]}>
+          <AntDesign name="check" size={24} color={color.name !== "black" ? "rgba(78, 44, 191)" : "white"} />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -30,5 +41,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
+    alignItems:'center',
+    justifyContent:'center',
   },
 });
