@@ -29,12 +29,12 @@ const Gradient = ({ data }: Props) => {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{fontSize:28, color:"rgba(78, 44, 191, 0.65)", fontWeight:'bold'}}>{data.title}</Text>
+        <Text style={{fontSize:28, color:"black", fontWeight:'semibold', letterSpacing:-1}}>{data.title}</Text>
         <CustomBox>
           <Ionicons
             name={data.gender === "female" ? "female-sharp" : "male-sharp"}
             size={28}
-            color={"rgba(78, 44, 191, 0.85)"}
+            color={"black"}
           />
         </CustomBox>
       </View>

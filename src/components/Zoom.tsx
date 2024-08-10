@@ -61,7 +61,7 @@ export default Zoom;
 const styles = StyleSheet.create({
   zoomControls: {
     position: "absolute",
-    bottom: 20,
+    bottom: 120,
     right: 20,
     width: 30,
     height: 70,

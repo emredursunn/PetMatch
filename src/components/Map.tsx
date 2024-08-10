@@ -42,7 +42,7 @@ const Map = ({ currentLocation, markers, handleMarkerPress }: Props) => {
             }}
             title="You"
           >
-            <FontAwesome5 name="walking" size={48} color="black" />
+            <FontAwesome5 name="walking" size={48} color="purple" />
           </Marker>
         )}
         {markers.map((marker) => (
@@ -52,7 +52,7 @@ const Map = ({ currentLocation, markers, handleMarkerPress }: Props) => {
               latitude: marker.latitude,
               longitude: marker.longitude,
             }}
-            title={marker.data.name}
+            title={marker.data.title}
             onPress={() => handleMarkerPress(marker)}
           >
             <Image

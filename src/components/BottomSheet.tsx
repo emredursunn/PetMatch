@@ -40,14 +40,14 @@ const BottomSheet = forwardRef<BottomSheetModal, Props>(({ data }, ref) => {
           <Carousel data={data.data.images} />
           <Gradient data={data.data}/>
         </BottomSheetView>
-        <DetailedPet data={data.data}/>
+        <DetailedPet data={data}/>
         <Description data={data.data} />
       </BottomSheetScrollView>
       <Pressable
         onPress={() => makePhoneCall(data.data.contact)}
         style={styles.btn}
       >
-        <Text style={styles.btnText}>Sahiplen!</Text>
+        <Text style={styles.btnText}>Sahiplen</Text>
       </Pressable>
     </BottomSheetModal>
   );
