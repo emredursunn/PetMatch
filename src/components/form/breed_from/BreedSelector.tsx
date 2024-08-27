@@ -87,8 +87,12 @@ const BreedSelector = ({ animalType, value, setFieldValue }: Props) => {
         CİNSİNİ DE SEÇELİM..
       </Text>
 
-      <Animated.View entering={SlideInDown} exiting={SlideOutDown} style={styles.container}>
-        {/* <FlashList
+      <Animated.View
+        entering={SlideInDown}
+        exiting={SlideOutDown}
+        style={styles.container}
+      >
+        <FlashList
           data={data?.pages.flat() || []}
           renderItem={renderItem}
           estimatedItemSize={100}
@@ -105,24 +109,20 @@ const BreedSelector = ({ animalType, value, setFieldValue }: Props) => {
             // Yükleme sırasında gösterilecek skeleton item'ları
             isFetching && !data?.pages.flat().length ? <Loading /> : null
           }
-        /> */}
-      
-      <Loading />
+        />
       </Animated.View>
-
-
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height:'80%',
+    width: "100%",
+    height: "80%",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor:colors.white,
-    padding:24
+    backgroundColor: colors.white,
+    padding: 24,
   },
 });
 
