@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import CustomBox from "./CustomBox";
 import { AnimalData } from "../../types/AnimalData";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { colors } from "../../utils/constants";
 
 type Props = {
   data: AnimalData;
@@ -20,7 +21,7 @@ const Gradient = ({ data }: Props) => {
         height: 75,
         justifyContent:'center'
     }}
-      colors={["transparent", "white"]}
+      colors={[colors.transparent, colors.white]}
     >
       <View
         style={{
@@ -34,7 +35,7 @@ const Gradient = ({ data }: Props) => {
           <Ionicons
             name={data.gender === "female" ? "female-sharp" : "male-sharp"}
             size={28}
-            color={"black"}
+            color={colors.purple_700}
           />
         </CustomBox>
       </View>

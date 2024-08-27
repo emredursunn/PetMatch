@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FormikErrors } from "formik";
-import { catColors } from "../../utils/constants";
+import { catColors } from "../../../utils/constants";
+import { AnimalFormState, Color } from "../../../types/AnimalFormState";
 import ColorItem from "./ColorItem";
-import { AnimalFormState, Color } from "../../types/AnimalFormState";
 
 type Props = {
+  value: Color[];
   setFieldValue: (
     field: string,
     value: any,
@@ -14,8 +15,8 @@ type Props = {
   error?: any;
 };
 
-const ColorSelector = ({ setFieldValue, error }: Props) => {
-  const [selectedColors, setSelectedColors] = useState<Color[]>([]);
+const ColorSelector = ({ value, setFieldValue, error }: Props) => {
+  const [selectedColors, setSelectedColors] = useState<Color[]>(value);
 
   useEffect(() => {
     setFieldValue("colors", selectedColors);
@@ -24,8 +25,8 @@ const ColorSelector = ({ setFieldValue, error }: Props) => {
 
   return (
     <View>
-      <Text>Renk</Text>
-      <View style={{ flexDirection: "row", gap: 5 }}>
+      <Text style={{fontSize:20, fontWeight:'bold', marginVertical:24}}>Renk</Text>
+      <View style={{ flexDirection: "row", gap: 8, flexWrap:'wrap' }}>
         {catColors.map((color, index) => (
           <ColorItem
             key={index}
@@ -35,7 +36,6 @@ const ColorSelector = ({ setFieldValue, error }: Props) => {
           />
         ))}
       </View>
-      {error && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };

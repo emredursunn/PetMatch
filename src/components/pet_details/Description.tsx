@@ -4,6 +4,7 @@ import { AnimalData } from "../../types/AnimalData";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CustomBox from "./CustomBox";
 import { makePhoneCall } from "../../utils/helperFunctions";
+import { colors } from "../../utils/constants";
 
 type Props = {
   data: AnimalData;
@@ -32,7 +33,7 @@ const Description = ({ data }: Props) => {
         </View>
         <TouchableOpacity onPress={() => makePhoneCall(data.contact)}>
         <CustomBox>
-          <Ionicons name="call-sharp" size={24} color="rgba(78, 44, 191, 0.72)" />
+          <Ionicons name="call-sharp" size={24} color={colors.purple_700} />
         </CustomBox>
         </TouchableOpacity>
       </View>

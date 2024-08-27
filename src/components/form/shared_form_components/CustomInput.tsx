@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInputProps,
 } from "react-native";
+import { colors } from "../../../utils/constants";
 
 interface CustomInputProps extends TextInputProps {
   label?: string;
@@ -29,9 +30,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
       <TextInput
         style={[styles.input, inputStyle, isFocused && styles.inputFocused]}
-        {...props}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        {...props}
       />
       {error && <Text style={styles.error}>{error}</Text>}
     </View>
@@ -43,15 +44,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   label: {
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight:'bold',
     color: "#333",
     marginBottom: 5,
   },
   input: {
-    height: 40,
+    height: 60,
     borderColor: "#ddd",
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 16,
     paddingHorizontal: 10,
     backgroundColor: "#fff",
   },
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   inputFocused: {
-    borderColor: "rgba(78, 44, 191, 0.42)", // Focused border color
+    borderColor: colors.purple_500, // Focused border color
     borderWidth: 2, // Focused border width
   },
 });

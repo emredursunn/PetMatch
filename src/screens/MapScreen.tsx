@@ -37,7 +37,7 @@ const MapScreen = () => {
             handleMarkerPress={handleMarkerPress}
           />
           {selectedMarker && (
-            <BottomSheet data={selectedMarker} ref={bottomSheetModalRef} />
+            <BottomSheet marker={selectedMarker} ref={bottomSheetModalRef} />
           )}
         </View>
       </BottomSheetModalProvider>

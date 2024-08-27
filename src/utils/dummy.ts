@@ -1,4 +1,5 @@
 import { AnimalMarker } from "../types/AnimalMarker";
+import { animalTypes } from "./constants";
 
 export const dummyPetList: AnimalMarker[] = [
   {
@@ -7,6 +8,7 @@ export const dummyPetList: AnimalMarker[] = [
     longitude: -121.988571,
     title: "Kedi",
     data: {
+      animalType: animalTypes.cat,
       title: "Boncuk",
       age: "1-2 years old",
       gender: "female",
@@ -27,12 +29,15 @@ export const dummyPetList: AnimalMarker[] = [
     longitude: -121.950214,
     title: "Kedi",
     data: {
+      animalType: animalTypes.cat,
       title: "Misket",
       age: "3-4 years old",
       gender: "male",
       species: "Angora",
       colors: ["Gray"],
-      images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjprtCGa3uN64o4Cz5jWOh98a2iZiJI2vdSg&s"],
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjprtCGa3uN64o4Cz5jWOh98a2iZiJI2vdSg&s",
+      ],
       contact: "+905455430857",
       description:
         "Misket, sevimli ve oyuncu bir Angora kedisidir. 3-4 yaşlarında, gri renkte ve erkek. Ailesini seven ve enerjik bir arkadaş arıyor. İyi bir ev ortamında mutlu olacaktır.",
@@ -41,15 +46,18 @@ export const dummyPetList: AnimalMarker[] = [
   {
     id: "3",
     latitude: 37.414182,
-    longitude: -121.978400,
+    longitude: -121.9784,
     title: "Kedi",
     data: {
+      animalType: animalTypes.cat,
       title: "Şeker",
       age: "2 years old",
       gender: "female",
       species: "British Shorthair",
       colors: ["Cream"],
-      images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfnh1rknRRYVddKPdBn0cSD1mWwx9_TH78_g&s"],
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfnh1rknRRYVddKPdBn0cSD1mWwx9_TH78_g&s",
+      ],
       contact: "+905455430857",
       description:
         "Şeker, 2 yaşında bir British Shorthair dişisidir. Krem rengindeki tüyleriyle dikkat çeker ve oldukça nazlıdır. Sakin bir yaşam alanında huzur içinde yaşamak istiyor.",
@@ -61,6 +69,7 @@ export const dummyPetList: AnimalMarker[] = [
     longitude: -122.043922,
     title: "Kedi",
     data: {
+      animalType: animalTypes.cat,
       title: "Limon",
       age: "1 year old",
       gender: "male",
@@ -81,6 +90,7 @@ export const dummyPetList: AnimalMarker[] = [
     longitude: -122.095922,
     title: "Kedi",
     data: {
+      animalType: animalTypes.cat,
       title: "Pamuk",
       age: "2-3 years old",
       gender: "female",

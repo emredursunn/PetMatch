@@ -1,7 +1,8 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Color } from "../../types/AnimalFormState";
+import { Color } from "../../../types/AnimalFormState";
+import { colors } from "../../../utils/constants";
 
 type Props = {
   color: Color;
@@ -27,7 +28,7 @@ const ColorItem = ({ color, setSelectedColors, selectedColors }: Props) => {
     >
       {isSelected && (
         <View style={[styles.item ]}>
-          <AntDesign name="check" size={24} color={color.name !== "black" ? "rgba(78, 44, 191)" : "white"} />
+          <AntDesign name="check" size={24} color={color.name !==  colors.black ? colors.purple : colors.white} />
         </View>
       )}
     </TouchableOpacity>
@@ -38,9 +39,9 @@ export default ColorItem;
 
 const styles = StyleSheet.create({
   item: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 80,
+    height: 80,
+    borderRadius: 45,
     alignItems:'center',
     justifyContent:'center',
   },

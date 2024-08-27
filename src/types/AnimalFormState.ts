@@ -1,15 +1,16 @@
 import { TextStyle } from "react-native";
-
 export interface AnimalFormState {
+  step: number;
+  animalType: string;
   title: string;
   breed: string;
-  gender: "male" | "female";
+  gender: string;
   description: string;
   colors: Color[];
-  photos: string[]; 
+  photos: string[];
 }
 
 export type Color = {
-    name:string,
-    code:TextStyle["color"]
-}
+  name: string;
+  code: TextStyle["color"];
+};

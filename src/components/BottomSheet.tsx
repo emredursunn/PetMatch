@@ -10,16 +10,14 @@ import Carousel from "./carousel/Carousel";
 import DetailedPet from "./pet_details/DetailedPet";
 import Description from "./pet_details/Description";
 import { makePhoneCall } from "../utils/helperFunctions";
-import { LinearGradient } from "expo-linear-gradient";
-import CustomBox from "./pet_details/CustomBox";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Gradient from "./pet_details/Gradient";
+import { colors } from "../utils/constants";
 
 type Props = {
-  data: AnimalMarker;
+  marker: AnimalMarker;
 };
 
-const BottomSheet = forwardRef<BottomSheetModal, Props>(({ data }, ref) => {
+const BottomSheet = forwardRef<BottomSheetModal, Props>(({ marker }, ref) => {
   const snapPoints = useMemo(() => ["90%"], []);
 
   return (
@@ -27,28 +25,29 @@ const BottomSheet = forwardRef<BottomSheetModal, Props>(({ data }, ref) => {
       ref={ref}
       snapPoints={snapPoints}
       style={styles.container}
+      enableContentPanningGesture={false}
     >
       <BottomSheetScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           flexGrow: 1,
-          backgroundColor: "rgba(197, 197, 197, 0.2)",
-          paddingBottom: 70,
+          backgroundColor: colors.bottom_background,
+          paddingBottom: 250,
         }}
       >
         <BottomSheetView>
-          <Carousel data={data.data.images} />
-          <Gradient data={data.data}/>
+          <Carousel data={marker.data.images} />
+          <Gradient data={marker.data} />
         </BottomSheetView>
-        <DetailedPet data={data}/>
-        <Description data={data.data} />
+        <DetailedPet data={marker} />
+        <Description data={marker.data} />
+        <Pressable
+          onPress={() => makePhoneCall(marker.data.contact)}
+          style={styles.btn}
+        >
+          <Text style={styles.btnText}>Sahiplen</Text>
+        </Pressable>
       </BottomSheetScrollView>
-      <Pressable
-        onPress={() => makePhoneCall(data.data.contact)}
-        style={styles.btn}
-      >
-        <Text style={styles.btnText}>Sahiplen</Text>
-      </Pressable>
     </BottomSheetModal>
   );
 });
@@ -60,9 +59,9 @@ const styles = StyleSheet.create({
   },
   btn: {
     position: "absolute",
-    bottom: 20,
+    bottom: 150,
     alignSelf: "center",
-    backgroundColor: "rgba(78, 44, 191, 0.72)",
+    backgroundColor: colors.purple_700,
     paddingVertical: 12,
     width: "90%",
     alignItems: "center",

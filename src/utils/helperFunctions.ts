@@ -1,5 +1,7 @@
 import { Alert, Linking, Platform } from "react-native";
 import { LatLng } from "react-native-maps";
+import { AnimalFormState } from "../types/AnimalFormState";
+import Toast, { ToastType } from "react-native-toast-message";
 
 export const makePhoneCall = (phone: string) => {
   console.log("callNumber ----> ", phone);
@@ -23,23 +25,54 @@ export const makePhoneCall = (phone: string) => {
 
 export function distance(coords1: LatLng, coords2: LatLng): number {
   const toRadians = (degree: number) => (degree * Math.PI) / 180;
-  
+
   const lat1 = toRadians(coords1.latitude);
   const lon1 = toRadians(coords1.longitude);
   const lat2 = toRadians(coords2.latitude);
   const lon2 = toRadians(coords2.longitude);
 
   const R = 6371; // Dünya'nın yarıçapı (kilometre cinsinden)
-  
+
   const dLat = lat2 - lat1;
   const dLon = lon2 - lon1;
-  
+
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1) * Math.cos(lat2) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  
+
   return R * c;
 }
+
+export const validateStepManually = (step: number, values: AnimalFormState) => {
+  switch (step) {
+    case 1:
+      return !!values.animalType;
+    case 2:
+      return !!values.breed;
+    case 3:
+      return !!values.gender;
+    case 4:
+      return !!values.title && values.colors.length > 0;
+    case 5:
+      return values.photos.length > 0 && !!values.description;
+    default:
+      return false;
+  }
+};
+
+export const showToast = (
+  type: ToastType,
+  text1: string | undefined,
+  text2: string | undefined
+) => {
+  Toast.show({
+    type,
+    text1,
+    text2,
+    swipeable: true,
+    text1Style: { fontSize: 18 },
+    text2Style: { fontSize: 12 },
+  });
+};

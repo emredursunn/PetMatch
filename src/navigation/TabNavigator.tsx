@@ -6,7 +6,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { ReactNode } from "react";
 import ProfileScreen from "../screens/ProfileScreen";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { colors } from "../utils/constants";
 
 type TabParams = {
   CreateScreen: undefined;
@@ -29,7 +29,7 @@ const CustomButton = ({
       height: 80,
       borderRadius: 40,
       alignSelf: "center",
-      backgroundColor: "rgba(78, 44, 191, 0.72)",
+      backgroundColor: colors.purple_700,
       top: -30,
     }}
     onPress={onPress}
@@ -43,6 +43,7 @@ export function MyTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: [styles.tabBar, styles.shadows],
       }}
@@ -56,17 +57,13 @@ export function MyTabs() {
             <View style={[styles.tabBarItem, { top: focused ? -8 : 0 }]}>
               <FontAwesome5
                 name="map"
-                size={focused ? 28 : 24}
-                color={
-                  focused ? "rgba(78, 44, 191, 1)" : "rgba(78, 44, 191, 0.50)"
-                }
+                size={24}
+                color={focused ? colors.purple : colors.purple_500}
               />
               <Text
                 style={{
-                  color: focused
-                    ? "rgba(78, 44,191,1)"
-                    : "rgba(78, 44, 191, 0.5)",
-                  fontSize: focused ? 16 : 12,
+                  color: focused ? colors.purple : colors.purple_500,
+                  fontSize: 14,
                 }}
               >
                 Map
@@ -94,17 +91,13 @@ export function MyTabs() {
             <View style={[styles.tabBarItem, { top: focused ? -8 : 0 }]}>
               <AntDesign
                 name="user"
-                size={focused ? 28 : 24}
-                color={
-                  focused ? "rgba(78, 44, 191, 1)" : "rgba(78, 44, 191, 0.50)"
-                }
+                size={24}
+                color={focused ? colors.purple : colors.purple_500}
               />
               <Text
                 style={{
-                  color: focused
-                    ? "rgba(78, 44,191,1)"
-                    : "rgba(78, 44, 191, 0.5)",
-                  fontSize: focused ? 16 : 12,
+                  color: focused ? colors.purple : colors.purple_500,
+                  fontSize: 14,
                 }}
               >
                 Profile
@@ -124,7 +117,7 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     elevation: 0,
-    backgroundColor: "white",
+    backgroundColor: "rgba(255,255,255,0.8)",
     borderRadius: 16,
     height: 80,
   },
@@ -132,14 +125,15 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOffset: {
       width: 0,
-      height: 10,
+      height: 20,
     },
     shadowOpacity: 0.4,
     shadowRadius: 16,
-    elevation: 5,
+    elevation: 22,
   },
   tabBarItem: {
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor:colors.transparent
   },
 });

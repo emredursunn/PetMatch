@@ -6,6 +6,7 @@ import { AnimalMarker } from "../../types/AnimalMarker";
 import useLocation from "../../hooks/useLocation";
 import { LatLng } from "react-native-maps";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { colors } from "../../utils/constants";
 
 type Props = {
   data: AnimalMarker;
@@ -43,7 +44,7 @@ const DetailedPet = ({ data }: Props) => {
           </View>
         </CustomBox>
         <CustomBox>
-          <Text style={styles.text}>{data.data.species}</Text>
+          <Text style={styles.text}>{data.data.gender}</Text>
         </CustomBox>
       </View>
       {distanceAway ? (
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   text: {
-    color: "rgba(78, 44, 191, 0.85)",
+    color: colors.purple_800,
     fontSize: 16,
   },
   distanceText: {

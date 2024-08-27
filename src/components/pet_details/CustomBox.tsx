@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { ReactNode } from "react";
+import { colors } from "../../utils/constants";
 
 type Props = {
   children: ReactNode;
@@ -13,7 +14,7 @@ export default CustomBox;
 
 const styles = StyleSheet.create({
     box:{
-        backgroundColor:'rgba(226, 220, 223, 0.8)',
+        backgroundColor:colors.fuchsia_800,
         paddingVertical:6,
         paddingHorizontal:18,
         borderRadius:20,
