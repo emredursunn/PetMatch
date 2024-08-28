@@ -15,7 +15,7 @@ import { FlashList } from "@shopify/flash-list";
 import RenderItem from "./RenderItem";
 import Loading from "./Loading";
 import { colors } from "../../../utils/constants";
-import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
+import Animated, { SlideInDown, SlideInRight, SlideOutDown, SlideOutLeft } from "react-native-reanimated";
 
 type Props = {
   animalType: string;
@@ -68,12 +68,11 @@ const BreedSelector = ({ animalType, value, setFieldValue }: Props) => {
   );
 
   return (
-    <View
+    <Animated.View entering={SlideInRight} exiting={SlideOutLeft}
       style={{
-        height: SCREEN_HEIGHT * 0.8,
+        height: SCREEN_HEIGHT * 0.65,
         width: SCREEN_WIDTH,
-        paddingTop: 100,
-        justifyContent: "center",
+        justifyContent:'center'
       }}
     >
       <Text
@@ -87,9 +86,7 @@ const BreedSelector = ({ animalType, value, setFieldValue }: Props) => {
         CİNSİNİ DE SEÇELİM..
       </Text>
 
-      <Animated.View
-        entering={SlideInDown}
-        exiting={SlideOutDown}
+      <View
         style={styles.container}
       >
         <FlashList
@@ -110,18 +107,20 @@ const BreedSelector = ({ animalType, value, setFieldValue }: Props) => {
             isFetching && !data?.pages.flat().length ? <Loading /> : null
           }
         />
-      </Animated.View>
-    </View>
+      </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "80%",
+    width: "95%",
+    height: "75%",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
+    borderRadius:40,
     backgroundColor: colors.white,
+    alignSelf:'center',
     padding: 24,
   },
 });

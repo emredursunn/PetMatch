@@ -3,14 +3,21 @@ import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Color } from "../../../types/AnimalFormState";
 import { colors } from "../../../utils/constants";
+import Animated, { FadeInDown, SlideInDown } from "react-native-reanimated";
 
 type Props = {
   color: Color;
+  index: number;
   setSelectedColors: React.Dispatch<React.SetStateAction<Color[]>>;
   selectedColors: Color[];
 };
 
-const ColorItem = ({ color, setSelectedColors, selectedColors }: Props) => {
+const ColorItem = ({
+  color,
+  index,
+  setSelectedColors,
+  selectedColors,
+}: Props) => {
   const isSelected = selectedColors.includes(color);
 
   const handleOnPress = () => {
@@ -22,16 +29,22 @@ const ColorItem = ({ color, setSelectedColors, selectedColors }: Props) => {
   };
 
   return (
-    <TouchableOpacity
-      onPress={handleOnPress}
+    <Animated.View
       style={[styles.item, { backgroundColor: color.code }]}
+      entering={FadeInDown.delay(75 * index)}
     >
-      {isSelected && (
-        <View style={[styles.item ]}>
-          <AntDesign name="check" size={24} color={color.name !==  colors.black ? colors.purple : colors.white} />
-        </View>
-      )}
-    </TouchableOpacity>
+      <TouchableOpacity onPress={handleOnPress} style={{width:'100%',height:'100%'}}>
+        {isSelected && (
+          <View style={[styles.item]}>
+            <AntDesign
+              name="check"
+              size={24}
+              color={color.name !== colors.black ? colors.purple : colors.white}
+            />
+          </View>
+        )}
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 
@@ -42,7 +55,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 45,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

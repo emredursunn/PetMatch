@@ -28,20 +28,16 @@ const MapScreen = () => {
   };
 
   return (
-    <GestureHandlerRootView>
-      <BottomSheetModalProvider>
-        <View style={styles.container}>
-          <Map
-            currentLocation={location}
-            markers={dummyPetList}
-            handleMarkerPress={handleMarkerPress}
-          />
-          {selectedMarker && (
-            <BottomSheet marker={selectedMarker} ref={bottomSheetModalRef} />
-          )}
-        </View>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <Map
+        currentLocation={location}
+        markers={dummyPetList}
+        handleMarkerPress={handleMarkerPress}
+      />
+      {selectedMarker && (
+        <BottomSheet marker={selectedMarker} ref={bottomSheetModalRef} />
+      )}
+    </View>
   );
 };
 

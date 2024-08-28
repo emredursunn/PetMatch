@@ -3,10 +3,9 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { Formik, FormikProps, FormikHelpers } from "formik";
@@ -18,9 +17,11 @@ import { AnimalFormState } from "../../types/AnimalFormState";
 import ColorSelector from "./color_form/ColorSelector";
 import { colors } from "../../utils/constants";
 import { showToast, validateStepManually } from "../../utils/helperFunctions";
-import CustomImage from "./shared_form_components/CustomImage";
 import BreedSelector from "./breed_from/BreedSelector";
 import AnimalTypeSelector from "./animal_type_form/AnimalTypeSelector";
+import Animated, { BounceInDown, FadeOut, SlideInRight, SlideOutLeft } from "react-native-reanimated";
+import AddImageButton from "./image_form/AddImageButton";
+import FormImage from "./image_form/FormImage";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
@@ -39,6 +40,7 @@ const MultiStepForm = () => {
   ) => {
     console.log(formstate);
     resetForm();
+    setStep(1)
   };
 
   const ErrorMsg: React.FC<{ error: string }> = ({ error }) => (
@@ -71,8 +73,6 @@ const MultiStepForm = () => {
         touched,
         setFieldValue,
         handleBlur,
-        isValid,
-        dirty,
         values,
       }: FormikProps<AnimalFormState>) => {
         const pickImage = async () => {
@@ -106,21 +106,21 @@ const MultiStepForm = () => {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View
               style={{
-                flex: 1,
-                justifyContent: "center",
-                paddingBottom: 300,
-                paddingHorizontal: 5,
-                top: 50,
+                paddingBottom: 100,
               }}
             >
-              <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : undefined}
+              <View
+                style={{
+                  height: "80%",
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 {step === 1 && (
                   <AnimalTypeSelector
                     setFieldValue={setFieldValue}
                     value={values.animalType}
-                    onBlur={() => handleBlur("animalType")}
                   />
                 )}
 
@@ -140,9 +140,10 @@ const MultiStepForm = () => {
                 )}
 
                 {step === 4 && (
-                  <View
+                  <Animated.View
+                    entering={SlideInRight}
+                    exiting={SlideOutLeft}
                     style={{
-                      marginTop: 50,
                       justifyContent: "center",
                       padding: 12,
                     }}
@@ -166,127 +167,120 @@ const MultiStepForm = () => {
                     {values.colors.length < 1 && (
                       <ErrorMsg error="En az 1 renk seçiniz" />
                     )}
-                  </View>
+                  </Animated.View>
                 )}
 
                 {step === 5 && (
-                  <View
-                    style={{ flex: 1, justifyContent: "center", padding: 10 }}
-                  >
-                    <View style={{ marginVertical: 10 }}>
-                      <Text style={{ fontSize: 20, fontWeight: "700" }}>
-                        Photos
-                      </Text>
-                      <View
-                        style={{
-                          width: "100%",
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          marginVertical: 8,
-                          gap: 32,
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={pickImage}
-                          style={{
-                            width: "40%",
-                            height: 150,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            backgroundColor: colors.white,
-                            borderRadius: 12,
-                          }}
-                        >
-                          <Text style={{ fontSize: 78, fontWeight: "400" }}>
-                            +
-                          </Text>
-                        </TouchableOpacity>
-                        {values.photos.map((photo, index) => (
-                          <CustomImage
-                            key={index}
-                            imageUri={photo}
-                            remove={removePhoto}
-                            index={index}
-                          />
-                        ))}
-                      </View>
-                    </View>
+                  <Animated.View entering={SlideInRight} exiting={FadeOut} style={{ width: "100%", padding: 10, justifyContent:'center' }}>
+                    <Text
+                      style={{
+                        fontSize: 32,
+                        fontWeight: "700",
+                        textAlign: "center",
+                        marginBottom:50
+                      }}
+                    >
+                      ÇOKKK AZ KALDI...
+                    </Text>
+
+                    <Text style={styles.label}>Fotoğraf Ekle</Text>
+                    <ScrollView
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
+                      contentContainerStyle={{
+                        marginVertical: 8,
+                      }}
+                    >
+                      <AddImageButton key={"add-image"} onPress={pickImage} />
+
+                      {values.photos.map((photo, index) => (
+                        <FormImage
+                          key={index}
+                          imgUri={photo}
+                          index={index}
+                          onRemove={() => removePhoto(index)}
+                        />
+                      ))}
+                    </ScrollView>
 
                     <CustomInput
                       label="Description"
                       value={values.description}
                       onChangeText={handleChange("description")}
-                      placeholder="Description"
+                      placeholder="Çok sevecen huylu, oyuncu biir kedidir. Onun yeni kahramanı olur musun?"
                       onTouchStart={handleBlur("description")}
                       multiline
-                      numberOfLines={10}
+                      numberOfLines={6}
                       style={{
-                        height: 200,
+                        width: "90%",
                         backgroundColor: colors.white,
                         borderRadius: 16,
+                        borderWidth: 1,
+                        borderColor: colors.purple_700,
                         padding: 12,
                       }}
                       textAlignVertical="top"
                       error={touched.description && errors.description}
                     />
-                  </View>
+                  </Animated.View>
                 )}
+              </View>
 
-                {/* BUTTONS */}
-                <View style={styles.buttonContainer}>
-                  {step > 1 && (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        handlePrev();
-                      }}
-                    >
-                      <Text style={styles.buttonText}>Back</Text>
-                    </TouchableOpacity>
-                  )}
-                  {step < 5 && (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        if (validateStepManually(step, values)) {
-                          handleNext();
-                        } else {
-                          showToast(
-                            "error",
-                            "Bilgiler eksik",
-                            "Bİlgileri eksiksiz giriniz"
-                          );
-                        }
-                      }}
-                    >
-                      <Text style={styles.buttonText}>Next</Text>
-                    </TouchableOpacity>
-                  )}
-                  {step === 5 && (
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        if (validateStepManually(step, values)) {
-                          handleSubmit();
-                          showToast(
-                            "success",
-                            "Başarılı",
-                            "İlanınız başarıyla eklendi"
-                          );
-                        } else {
-                          showToast(
-                            "error",
-                            "Bilgiler eksik",
-                            "Bİlgileri eksiksiz giriniz"
-                          );
-                        }
-                      }}
-                    >
-                      <Text style={styles.buttonText}>Submit</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </KeyboardAvoidingView>
+              {/* BUTTONS */}
+              <View style={styles.buttonContainer}>
+                {step > 1 && (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      handlePrev();
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Back</Text>
+                  </TouchableOpacity>
+                )}
+                {step < 5 && (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      if (validateStepManually(step, values)) {
+                        handleNext();
+                      } else {
+                        showToast(
+                          "error",
+                          "Bilgiler eksik",
+                          "Bİlgileri eksiksiz giriniz"
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Next</Text>
+                  </TouchableOpacity>
+                )}
+                {step === 5 && (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      if (validateStepManually(step, values)) {
+                        handleSubmit();
+                        showToast(
+                          "success",
+                          "Başarılı",
+                          "İlanınız başarıyla eklendi",
+                          8000
+                        );
+                      } else {
+                        showToast(
+                          "error",
+                          "Bilgiler eksik",
+                          "Bİlgileri eksiksiz giriniz",
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Submit</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </TouchableWithoutFeedback>
         );
@@ -300,13 +294,14 @@ export default MultiStepForm;
 const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
+    height: "20%",
     justifyContent: "space-evenly",
     flexDirection: "row",
+    alignItems: "center",
   },
   button: {
-    margin: 10,
+    height: "40%",
     width: "40%",
-    paddingVertical: 18,
     backgroundColor: colors.purple_500,
     alignItems: "center",
     justifyContent: "center",
@@ -316,5 +311,11 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 16,
     fontWeight: "700",
+  },
+  label: {
+    fontSize: 20,
+    fontWeight:'bold',
+    color: "#333",
+    marginBottom: 5,
   },
 });

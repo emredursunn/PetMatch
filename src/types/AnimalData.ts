@@ -12,8 +12,15 @@ export type AnimalData = {
   description?: string;
 };
 
+export enum AnimalTypes {
+  DOG = "dog",
+  CAT = "cat",
+  BIRD = "bird",
+  OTHERS = "others",
+}
+
 export type AnimalType = {
-  name: string;
+  name: AnimalTypes;
   backgroundColor: ViewStyle["backgroundColor"];
   lottie: string;
 };

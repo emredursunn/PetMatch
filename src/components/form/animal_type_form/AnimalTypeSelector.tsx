@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import SelectButton from "../shared_form_components/SelectButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -7,6 +14,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AnimalFormState } from "../../../types/AnimalFormState";
 import LottieView from "lottie-react-native";
 import { animalTypes, colors } from "../../../utils/constants";
+import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 
 type Props = {
   value: any;
@@ -16,10 +24,10 @@ type Props = {
     shouldValidate?: boolean
   ) => Promise<void | FormikErrors<AnimalFormState>>;
   error?: any;
-  onBlur: () => void;
 };
 
-const AnimalTypeSelector = ({ setFieldValue, value, error, onBlur }: Props) => {
+const AnimalTypeSelector = ({ setFieldValue, value, error }: Props) => {
+  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
   const [selected, setSelected] = useState(value);
 
   useEffect(() => {
@@ -27,31 +35,37 @@ const AnimalTypeSelector = ({ setFieldValue, value, error, onBlur }: Props) => {
   }, [selected]);
 
   return (
-    <GestureHandlerRootView
-      style={{ height: "100%", width: "100%" }}
-    >
+    <Animated.View style={{width:SCREEN_WIDTH, height:SCREEN_HEIGHT * 0.6, justifyContent:'center'}} entering={SlideInRight} exiting={SlideOutLeft}>
       <Text
         style={{
           textAlign: "center",
           fontSize: 36,
           fontWeight: "700",
           letterSpacing: -1,
-          marginVertical: 20,
+          marginVertical: 10,
         }}
       >
-        Evcil hayvanınız nedir?
+        Çocuğunuzun türü nedir?
       </Text>
       <View
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          height: "100%",
+          height:'60%',
           width: "100%",
           justifyContent: "space-evenly",
         }}
       >
         {Object.entries(animalTypes).map(([key, animal]) => (
-          <View key={key} style={{ alignItems: "center", width: "40%",height:'30%', marginVertical:20 }}>
+          <View
+            key={key}
+            style={{
+              alignItems: "center",
+              width: "40%",
+              height: "40%",
+              marginVertical: 20,
+            }}
+          >
             <Text style={styles.name}>{animal.name}</Text>
             <SelectButton
               selectedValue={value}
@@ -72,8 +86,7 @@ const AnimalTypeSelector = ({ setFieldValue, value, error, onBlur }: Props) => {
           </View>
         ))}
       </View>
-      {error && <Text style={styles.error}>{error}</Text>}
-    </GestureHandlerRootView>
+    </Animated.View>
   );
 };
 
@@ -92,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.white,
     borderRadius: 16,
-    shadowColor: colors.black,
+    shadowColor: colors.purple_800,
     shadowOffset: { width: 0, height: 10 },
     shadowRadius: 16,
     shadowOpacity: 0.4,

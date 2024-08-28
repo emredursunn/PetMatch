@@ -28,6 +28,7 @@ export const colors = {
   transparent: "transparent",
   white: "white",
   black: "black",
+  red:"red"
 };
 
 export const animalTypes = {

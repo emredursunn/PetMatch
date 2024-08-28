@@ -31,6 +31,7 @@ const ColorSelector = ({ value, setFieldValue, error }: Props) => {
           <ColorItem
             key={index}
             color={color}
+            index={index}
             setSelectedColors={setSelectedColors}
             selectedColors={selectedColors}
           />

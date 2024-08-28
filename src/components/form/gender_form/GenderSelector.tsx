@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import SelectButton from "../shared_form_components/SelectButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -6,6 +12,7 @@ import { FormikErrors } from "formik";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AnimalFormState } from "../../../types/AnimalFormState";
 import { colors } from "../../../utils/constants";
+import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 
 type Props = {
   value: any;
@@ -19,13 +26,18 @@ type Props = {
 
 const GenderSelector = ({ setFieldValue, value, error }: Props) => {
   const [selectedGender, setSelectedGender] = useState(value);
+  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
 
   useEffect(() => {
     setFieldValue("gender", selectedGender);
   }, [selectedGender]);
 
   return (
-    <GestureHandlerRootView style={{ alignItems: "center", marginTop: 200 }}>
+    <Animated.View
+      entering={SlideInRight}
+      exiting={SlideOutLeft}
+      style={{width:SCREEN_WIDTH, height:SCREEN_HEIGHT * 0.6, justifyContent:'center' }}
+    >
       <Text
         style={{
           textAlign: "center",
@@ -41,7 +53,7 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
         style={{
           width: "100%",
           flexDirection: "row",
-          justifyContent: "space-evenly",
+          justifyContent: "space-around",
         }}
       >
         <SelectButton
@@ -85,8 +97,7 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
           </Text>
         </SelectButton>
       </View>
-      {error && <Text style={styles.error}>{error}</Text>}
-    </GestureHandlerRootView>
+    </Animated.View>
   );
 };
 

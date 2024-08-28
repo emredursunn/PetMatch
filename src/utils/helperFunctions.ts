@@ -65,7 +65,8 @@ export const validateStepManually = (step: number, values: AnimalFormState) => {
 export const showToast = (
   type: ToastType,
   text1: string | undefined,
-  text2: string | undefined
+  text2: string | undefined,
+  visibilityTime?:number
 ) => {
   Toast.show({
     type,
@@ -74,5 +75,6 @@ export const showToast = (
     swipeable: true,
     text1Style: { fontSize: 18 },
     text2Style: { fontSize: 12 },
+    visibilityTime
   });
 };
