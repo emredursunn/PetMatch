@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { Breed } from "../../../types/AnimalData";
+import { Breed } from "../../../types/AnimalAd";
 import { FormikErrors } from "formik";
 import { AnimalFormState } from "../../../types/AnimalFormState";
 import { useInfiniteQuery } from "react-query";
@@ -15,7 +15,7 @@ import { FlashList } from "@shopify/flash-list";
 import RenderItem from "./RenderItem";
 import Loading from "./Loading";
 import { colors } from "../../../utils/constants";
-import Animated, { SlideInDown, SlideInRight, SlideOutDown, SlideOutLeft } from "react-native-reanimated";
+import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 
 type Props = {
   animalType: string;

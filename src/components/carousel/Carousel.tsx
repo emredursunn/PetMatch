@@ -7,7 +7,7 @@ import {
   ViewToken,
 } from "react-native";
 import React, { useMemo } from "react";
-import {
+import Animated, {
   SharedValue,
   useAnimatedScrollHandler,
   useSharedValue,
@@ -47,7 +47,7 @@ const Carousel = ({ data }: Props) => {
   };
 
   return (
-    <BottomSheetView style={{width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 3 }}>
+    <BottomSheetView style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 3 }}>
       <BottomSheetFlatList
         data={data}
         renderItem={renderItem}
@@ -62,4 +62,3 @@ const Carousel = ({ data }: Props) => {
 };
 
 export default Carousel;
-

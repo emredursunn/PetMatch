@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { AnimalData } from "../../types/AnimalData";
+import { AnimalData } from "../../types/AnimalAd";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CustomBox from "./CustomBox";
 import { makePhoneCall } from "../../utils/helperFunctions";

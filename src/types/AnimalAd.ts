@@ -1,6 +1,7 @@
 import { ViewStyle } from "react-native";
 
-export type AnimalData = {
+export type AnimalAd = {
+  id:string,
   animalType: AnimalType;
   title: string;
   age: string;
@@ -15,7 +16,6 @@ export type AnimalData = {
 export enum AnimalTypes {
   DOG = "dog",
   CAT = "cat",
-  BIRD = "bird",
   OTHERS = "others",
 }
 
@@ -26,6 +26,6 @@ export type AnimalType = {
 };
 
 export type Breed = {
-  id: string;
-  name: string;
-};
+  id:string,
+  name:string
+}

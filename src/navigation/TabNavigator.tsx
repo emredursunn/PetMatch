@@ -4,7 +4,7 @@ import CreateScreen from "../screens/CreateScreen";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { ReactNode } from "react";
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileScreen from "../screens/profile/ProfileScreen";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors } from "../utils/constants";
 

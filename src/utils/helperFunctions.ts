@@ -23,6 +23,10 @@ export const makePhoneCall = (phone: string) => {
   Linking.openURL(phoneNumber);
 };
 
+export const findUserById = async (userId:string) => {
+  return 
+}
+
 export function distance(coords1: LatLng, coords2: LatLng): number {
   const toRadians = (degree: number) => (degree * Math.PI) / 180;
 
@@ -56,7 +60,7 @@ export const validateStepManually = (step: number, values: AnimalFormState) => {
     case 4:
       return !!values.title && values.colors.length > 0;
     case 5:
-      return values.photos.length > 0 && !!values.description;
+      return values.photos.length > 0 && values.description.trim().length > 0;
     default:
       return false;
   }

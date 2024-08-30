@@ -19,7 +19,7 @@ import { colors } from "../../utils/constants";
 import { showToast, validateStepManually } from "../../utils/helperFunctions";
 import BreedSelector from "./breed_from/BreedSelector";
 import AnimalTypeSelector from "./animal_type_form/AnimalTypeSelector";
-import Animated, { BounceInDown, FadeOut, SlideInRight, SlideOutLeft } from "react-native-reanimated";
+import Animated, {  FadeOut, SlideInRight, SlideOutLeft } from "react-native-reanimated";
 import AddImageButton from "./image_form/AddImageButton";
 import FormImage from "./image_form/FormImage";
 
@@ -42,12 +42,6 @@ const MultiStepForm = () => {
     resetForm();
     setStep(1)
   };
-
-  const ErrorMsg: React.FC<{ error: string }> = ({ error }) => (
-    <View style={{ width: "75%", marginTop: 4 }}>
-      <Text style={{ color: "red", fontSize: 12 }}>{error}</Text>
-    </View>
-  );
 
   return (
     <Formik
@@ -155,18 +149,11 @@ const MultiStepForm = () => {
                       placeholder="Animal Name"
                       onTouchStart={handleBlur("title")}
                     />
-                    {touched.title && !values.title && (
-                      <ErrorMsg error="İsim giriniz" />
-                    )}
-
                     <ColorSelector
                       value={values.colors}
                       setFieldValue={setFieldValue}
                       error={touched.colors && errors.colors}
                     />
-                    {values.colors.length < 1 && (
-                      <ErrorMsg error="En az 1 renk seçiniz" />
-                    )}
                   </Animated.View>
                 )}
 

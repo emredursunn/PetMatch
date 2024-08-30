@@ -1,16 +1,12 @@
 import {
-  Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   useWindowDimensions,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import SelectButton from "../shared_form_components/SelectButton";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { FormikErrors } from "formik";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AnimalFormState } from "../../../types/AnimalFormState";
 import LottieView from "lottie-react-native";
 import { animalTypes, colors } from "../../../utils/constants";
