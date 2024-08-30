@@ -1,16 +1,17 @@
 import { ViewStyle } from "react-native";
+import { Color } from "./AnimalFormState";
 
 export type AnimalAd = {
   id:string,
+  userId:string,
   animalType: AnimalType;
   title: string;
   age: string;
   gender: string;
   breed: string;
-  colors: string[];
+  description: string;
+  colors: Color[];
   images: string[];
-  contact: string;
-  description?: string;
 };
 
 export enum AnimalTypes {
