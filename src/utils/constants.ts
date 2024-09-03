@@ -28,7 +28,9 @@ export const colors = {
   transparent: "transparent",
   white: "white",
   black: "black",
-  red:"red"
+  red:"red",
+  blue:"#0e38f5",
+  pink:"#f50ea8"
 };
 
 export const animalTypes = {
