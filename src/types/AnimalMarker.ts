@@ -1,9 +1,9 @@
-import { AnimalAd } from "./AnimalAd";
+import { Ad } from "./Ad";
 
 export type AnimalMarker = {
   id: string;
   latitude: number;
   longitude: number;
   title: string;
-  data: AnimalAd;
+  data: Ad;
 };

@@ -1,6 +1,6 @@
 import { ViewStyle } from "react-native";
 
-export type AnimalAd = {
+export type Ad = {
   id:string,
   animalType: AnimalType;
   title: string;
