@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { forwardRef } from "react";
 import MapView, { Region } from "react-native-maps";
+import { colors } from "../utils/constants";
 
 type Props = {
   region: Region;
@@ -61,17 +62,21 @@ export default Zoom;
 const styles = StyleSheet.create({
   zoomControls: {
     position: "absolute",
-    bottom: 120,
-    right: 20,
-    width: 30,
-    height: 70,
-    borderWidth: 1,
-    backgroundColor: "white",
+    top: '30%',
+    left: 20,
+    gap:16
   },
   zoomButton: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    borderWidth:0.5,
+    borderRadius: 12,
+    width: 35,
+    height: 35,
+    backgroundColor:'rgba(255,255,255,1)',
+    shadowColor:colors.black,
+    shadowOffset:{height:4,width:2},
+    elevation:10,    
   },
   zoomButtonText: {
     fontSize: 24,

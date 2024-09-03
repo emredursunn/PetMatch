@@ -10,7 +10,7 @@ type Props = {
   data: AnimalAd;
 };
 
-const Gradient = ({ data }: Props) => {
+const Header = ({ data }: Props) => {
   return (
     <LinearGradient
       style={{
@@ -19,8 +19,8 @@ const Gradient = ({ data }: Props) => {
         zIndex: 1,
         width: "100%",
         height: 75,
-        justifyContent:'center'
-    }}
+        justifyContent: "center",
+      }}
       colors={[colors.transparent, colors.white]}
     >
       <View
@@ -30,12 +30,21 @@ const Gradient = ({ data }: Props) => {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{fontSize:28, color:"black", fontWeight:'semibold', letterSpacing:-1}}>{data.title}</Text>
+        <Text
+          style={{
+            fontSize: 28,
+            color: colors.black,
+            fontWeight: "600",
+            letterSpacing: -1,
+          }}
+          >
+          {data.title}
+        </Text>
         <CustomBox>
           <Ionicons
             name={data.gender === "female" ? "female-sharp" : "male-sharp"}
-            size={28}
-            color={colors.purple_700}
+            size={20}
+            color={data.gender === "female" ? colors.pink : colors.blue}
           />
         </CustomBox>
       </View>
@@ -43,4 +52,4 @@ const Gradient = ({ data }: Props) => {
   );
 };
 
-export default Gradient;
+export default Header;

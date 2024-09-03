@@ -1,6 +1,7 @@
 import { forwardRef, useMemo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
+  ANIMATION_EASING,
   BottomSheetModal,
   BottomSheetScrollView,
   BottomSheetView,
@@ -10,8 +11,9 @@ import Carousel from "./carousel/Carousel";
 import DetailedPet from "./pet_details/DetailedPet";
 import Description from "./pet_details/Description";
 import { makePhoneCall } from "../utils/helperFunctions";
-import Gradient from "./pet_details/Gradient";
 import { colors } from "../utils/constants";
+import Header from "./pet_details/Header";
+import { Easing, ReduceMotion } from "react-native-reanimated";
 
 type Props = {
   marker: AnimalMarker;
@@ -26,6 +28,8 @@ const BottomSheet = forwardRef<BottomSheetModal, Props>(({ marker }, ref) => {
       snapPoints={snapPoints}
       style={styles.container}
       enableContentPanningGesture={false}
+      animateOnMount={true}
+      animationConfigs={{easing:Easing.linear}}
     >
       <BottomSheetScrollView
         showsVerticalScrollIndicator={false}
@@ -37,7 +41,7 @@ const BottomSheet = forwardRef<BottomSheetModal, Props>(({ marker }, ref) => {
       >
         <BottomSheetView>
           <Carousel data={marker.data.images} />
-          <Gradient data={marker.data} />
+          <Header data={marker.data} />
         </BottomSheetView>
         <DetailedPet data={marker} />
         <Description data={marker.data} />
