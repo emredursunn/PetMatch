@@ -1,13 +1,14 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React, { ReactNode } from "react";
 import { colors } from "../../utils/constants";
 
 type Props = {
   children: ReactNode;
+  customStyle?:ViewStyle
 };
 
-const CustomBox = ({ children }: Props) => {
-  return <View style={styles.box}>{children}</View>;
+const CustomBox = ({ children,customStyle }: Props) => {
+  return <View style={[styles.box, customStyle]}>{children}</View>;
 };
 
 export default CustomBox;

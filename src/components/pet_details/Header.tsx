@@ -2,12 +2,12 @@ import { View, Text } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import CustomBox from "./CustomBox";
-import { AnimalAd } from "../../types/AnimalAd";
+import { Ad } from "../../types/Ad";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { colors } from "../../utils/constants";
 
 type Props = {
-  data: AnimalAd;
+  data: Ad;
 };
 
 const Header = ({ data }: Props) => {

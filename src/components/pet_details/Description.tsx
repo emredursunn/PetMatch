@@ -1,13 +1,13 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { AnimalAd } from "../../types/AnimalAd";
+import { Ad } from "../../types/Ad";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CustomBox from "./CustomBox";
 import { makePhoneCall } from "../../utils/helperFunctions";
 import { colors } from "../../utils/constants";
 
 type Props = {
-  data: AnimalAd;
+  data: Ad;
 };
 
 const Description = ({ data }: Props) => {
