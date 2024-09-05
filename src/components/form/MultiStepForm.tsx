@@ -22,6 +22,7 @@ import AnimalTypeSelector from "./animal_type_form/AnimalTypeSelector";
 import Animated, {  FadeOut, SlideInRight, SlideOutLeft } from "react-native-reanimated";
 import AddImageButton from "./image_form/AddImageButton";
 import FormImage from "./image_form/FormImage";
+import Gradient from "../Gradient";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1);
@@ -98,6 +99,7 @@ const MultiStepForm = () => {
 
         return (
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <Gradient>
             <View
               style={{
                 paddingBottom: 100,
@@ -269,6 +271,7 @@ const MultiStepForm = () => {
                 )}
               </View>
             </View>
+            </Gradient>
           </TouchableWithoutFeedback>
         );
       }}

@@ -6,11 +6,11 @@ import {
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { Breed } from "../../../types/AnimalAd";
+import { Breed } from "../../../types/Ad";
 import { FormikErrors } from "formik";
 import { AnimalFormState } from "../../../types/AnimalFormState";
 import { useInfiniteQuery } from "react-query";
-import { getBreeds } from "../../../service/api";
+import { getBreeds } from "../../../services/api";
 import { FlashList } from "@shopify/flash-list";
 import RenderItem from "./RenderItem";
 import Loading from "./Loading";

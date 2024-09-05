@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import { Breed } from "../../../types/AnimalAd";
+import { Breed } from "../../../types/Ad";
 import SelectButton from "../shared_form_components/SelectButton";
 
 type Props = {
