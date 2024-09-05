@@ -1,7 +1,7 @@
 import { ViewStyle } from "react-native";
 
 export type Ad = {
-  id:string,
+  id?:string,
   animalType: AnimalType;
   title: string;
   age: string;
@@ -13,14 +13,8 @@ export type Ad = {
   description?: string;
 };
 
-export enum AnimalTypes {
-  DOG = "dog",
-  CAT = "cat",
-  OTHERS = "others",
-}
-
 export type AnimalType = {
-  name: AnimalTypes;
+  name: string;
   backgroundColor: ViewStyle["backgroundColor"];
   lottie: string;
 };
