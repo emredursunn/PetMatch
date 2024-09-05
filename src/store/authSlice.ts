@@ -63,7 +63,7 @@ export const signOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await signOutAsync();
-      await removeFromStorage("user");
+      await removeFromStorage("uid");
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

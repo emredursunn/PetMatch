@@ -9,6 +9,7 @@ import { removeUser, setUser } from "../store/authSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { getUser } from "../services/firebaseService/dbService";
+import { getFromStorage } from "../utils/helperFunctions";
 
 export const RootNavigation = () => {
   const [loading, setLoading] = useState(true);
@@ -17,23 +18,24 @@ export const RootNavigation = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setLoading(true);
-      if (usr) {
-        const currentUser = getUser(usr.uid) 
-        dispatch(setUser(currentUser));
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      } else {
-        dispatch(removeUser());
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+    const fetchExistUser = async () => {
+      try {
+        setLoading(true);
+        const uid = await getFromStorage("uid");
+        if (uid) {
+          const usr = await getUser(uid);
+          if (usr) {
+            dispatch(setUser(usr));
+          }
+        }
+      } catch (error: any) {
+        throw new Error(error);
+      } finally {
+        setLoading(false);
       }
-    });
-    return () => unsubscribe();
-  }, [dispatch]);
+    };
+    fetchExistUser();
+  }, []);
 
   if (loading) {
     // Render a loading indicator while checking the token
