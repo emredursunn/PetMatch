@@ -1,7 +1,6 @@
 import { forwardRef, useMemo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import {
-  ANIMATION_EASING,
   BottomSheetModal,
   BottomSheetScrollView,
   BottomSheetView,
