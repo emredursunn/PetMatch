@@ -1,8 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { signInAsync, signOutAsync, signUpAsync } from "../services/firebaseService/authService";
+import {
+  signInAsync,
+  signOutAsync,
+  signUpAsync,
+} from "../services/firebaseService/authService";
+import { removeFromStorage, saveToStorage } from "../utils/helperFunctions";
+import { getUser } from "../services/firebaseService/dbService";
+import { IUser } from "../types/IUser";
 
 interface AuthState {
-  user: any;
+  user: IUser | null;
   error: string | null;
   loading: boolean;
 }
@@ -15,10 +22,18 @@ const initialState: AuthState = {
 
 export const signUp = createAsyncThunk(
   "auth/signUp",
-  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+  async (
+    {
+      fullName,
+      email,
+      password,
+      phone
+    }: { fullName: string; email: string; password: string, phone:string },
+    { rejectWithValue,dispatch }
+  ) => {
     try {
-      const user = await signUpAsync({ email, password });
-      return user;
+      await signUpAsync({ fullName, email, password, phone });
+      await dispatch(signIn({ email, password }));
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -27,9 +42,15 @@ export const signUp = createAsyncThunk(
 
 export const signIn = createAsyncThunk(
   "auth/signIn",
-  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+  async (
+    { email, password }: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const user = await signInAsync({ email, password });
+      const uid = (await signInAsync({ email, password })).uid;
+      await saveToStorage("uid", uid);
+      const user = await getUser(uid)
+      console.log("user",user)
       return user;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -42,6 +63,7 @@ export const signOut = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await signOutAsync();
+      await removeFromStorage("user");
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -55,6 +77,9 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
     },
+    removeUser: (state) => {
+      state.user = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,10 +88,10 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signUp.fulfilled, (state, action) => {
-        state.user = action.payload;
         state.loading = false;
       })
       .addCase(signUp.rejected, (state, action) => {
+        console.log(action.payload)
         state.error = action.payload as string;
         state.loading = false;
       })
@@ -97,6 +122,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, removeUser } = authSlice.actions;
 
 export default authSlice.reducer;
