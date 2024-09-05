@@ -12,7 +12,7 @@ export const dummyPetList: AnimalMarker[] = [
       title: "Boncuk",
       age: "1-2 years old",
       gender: "female",
-      species: "Tekir",
+      breed: "Tekir",
       colors: ["White"],
       images: [
         "https://img.freepik.com/free-photo/cute-domestic-kitten-sits-window-staring-outside-generative-ai_188544-12519.jpg",
@@ -33,7 +33,7 @@ export const dummyPetList: AnimalMarker[] = [
       title: "Misket",
       age: "3-4 years old",
       gender: "male",
-      species: "Angora",
+      breed: "Angora",
       colors: ["Gray"],
       images: [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjprtCGa3uN64o4Cz5jWOh98a2iZiJI2vdSg&s",
@@ -53,7 +53,7 @@ export const dummyPetList: AnimalMarker[] = [
       title: "Şeker",
       age: "2 years old",
       gender: "female",
-      species: "British Shorthair",
+      breed: "British Shorthair",
       colors: ["Cream"],
       images: [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfnh1rknRRYVddKPdBn0cSD1mWwx9_TH78_g&s",
@@ -73,7 +73,7 @@ export const dummyPetList: AnimalMarker[] = [
       title: "Limon",
       age: "1 year old",
       gender: "male",
-      species: "Siyam",
+      breed: "Siyam",
       colors: ["Orange"],
       images: [
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3qh9ksCl1vjuAA2VpS18ZxBwsRpeQ0kJ2vw&s",
@@ -94,7 +94,7 @@ export const dummyPetList: AnimalMarker[] = [
       title: "Pamuk",
       age: "2-3 years old",
       gender: "female",
-      species: "Maine Coon",
+      breed: "Maine Coon",
       colors: ["Black"],
       images: [
         "data:image/jpeg;base64,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",

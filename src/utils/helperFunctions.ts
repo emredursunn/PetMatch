@@ -1,7 +1,8 @@
-import { Alert, Linking, Platform } from "react-native";
+import { Alert, DimensionValue, Linking, Platform } from "react-native";
 import { LatLng } from "react-native-maps";
 import { AnimalFormState } from "../types/AnimalFormState";
 import Toast, { ToastType } from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const makePhoneCall = (phone: string) => {
   console.log("callNumber ----> ", phone);
@@ -81,4 +82,29 @@ export const showToast = (
     text2Style: { fontSize: 12 },
     visibilityTime
   });
+};
+
+export const saveToStorage = async (key:string,data: any) => {
+  try {
+    await AsyncStorage.setItem(key, data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getFromStorage = async (key:string) => {
+  try {
+    const data = await AsyncStorage.getItem(key);
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const removeFromStorage = async (key:string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (error) {
+    console.error('Error removing token', error);
+  }
 };
