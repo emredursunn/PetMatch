@@ -5,7 +5,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import SelectButton from "../shared_form_components/SelectButton";
+import SelectBox from "../shared_form_components/SelectBox";
 import { FormikErrors } from "formik";
 import { AnimalFormState } from "../../../types/AnimalFormState";
 import LottieView from "lottie-react-native";
@@ -63,7 +63,7 @@ const AnimalTypeSelector = ({ setFieldValue, value, error }: Props) => {
             }}
           >
             <Text style={styles.name}>{animal.name}</Text>
-            <SelectButton
+            <SelectBox
               selectedValue={value}
               setSelected={setSelected}
               value={key}
@@ -78,7 +78,7 @@ const AnimalTypeSelector = ({ setFieldValue, value, error }: Props) => {
                 autoPlay
                 loop
               />
-            </SelectButton>
+            </SelectBox>
           </View>
         ))}
       </View>

@@ -10,7 +10,7 @@ type Props = {
   customStyle?: ViewStyle;
 };
 
-const SelectButton = ({
+const SelectBox = ({
   value,
   selectedValue,
   setSelected,
@@ -31,5 +31,5 @@ const SelectButton = ({
   );
 };
 
-export default SelectButton;
+export default SelectBox;
 

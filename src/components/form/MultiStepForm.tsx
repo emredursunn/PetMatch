@@ -1,11 +1,10 @@
 import {
   View,
   Text,
-  TouchableOpacity,
-  StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
 import { Formik, FormikProps, FormikHelpers } from "formik";
@@ -16,17 +15,33 @@ import GenderSelector from "./gender_form/GenderSelector";
 import { AnimalFormState } from "../../types/AnimalFormState";
 import ColorSelector from "./color_form/ColorSelector";
 import { colors } from "../../utils/constants";
-import { showToast, validateStepManually } from "../../utils/helperFunctions";
+import { showToast } from "../../utils/helperFunctions";
 import BreedSelector from "./breed_from/BreedSelector";
 import AnimalTypeSelector from "./animal_type_form/AnimalTypeSelector";
-import Animated, {  FadeOut, SlideInRight, SlideOutLeft } from "react-native-reanimated";
+import Animated, {
+  FadeOut,
+  SlideInRight,
+  SlideOutLeft,
+} from "react-native-reanimated";
 import AddImageButton from "./image_form/AddImageButton";
 import FormImage from "./image_form/FormImage";
 import Gradient from "../Gradient";
+import FormButtons from "./shared_form_components/FormButtons";
+import { Ad } from "../../types/Ad";
+import uuid from "react-native-uuid";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { createAd, updateAd } from "../../store/adSlice";
 
-const MultiStepForm = () => {
+type Props = {
+  editingAd?: Ad;
+  setEditingAd?: React.Dispatch<React.SetStateAction<Ad | null>>;
+};
+
+const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
   const [step, setStep] = useState(1);
-
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch<AppDispatch>();
   const handlePrev = () => {
     setStep((prev) => prev - 1);
   };
@@ -35,13 +50,44 @@ const MultiStepForm = () => {
     setStep((prev) => prev + 1);
   };
 
-  const submit = (
-    formstate: AnimalFormState,
+  const submit = async (
+    formState: AnimalFormState,
     { resetForm }: FormikHelpers<AnimalFormState>
   ) => {
-    console.log(formstate);
-    resetForm();
-    setStep(1)
+    try {
+      const randomUUID = uuid.v4().toString();
+      const ad = {
+        id: editingAd?.id || randomUUID, // Assign the generated UUID
+        userId: user!.uid,
+        animalType: formState.animalType, // Ensure type compatibility
+        title: formState.title,
+        age: formState.age || "", // Default to empty string if not provided
+        gender: formState.gender,
+        breed: formState.breed,
+        colors: formState.colors, // Assuming colors are of type Color and need to be converted to strings
+        images: formState.images, // Mapping images to images
+        contact: user!.phone, // Default to empty string if not provided
+        description: formState.description,
+      } as Ad;
+      if (editingAd && setEditingAd) {
+        dispatch(updateAd(ad));
+        showToast(
+          "success",
+          "Başarılı",
+          "İlanınız başarıyla güncellendi",
+          5000
+        );
+        setEditingAd(null);
+      } else {
+        dispatch(createAd(ad));
+        showToast("success", "Başarılı", "İlanınız başarıyla eklendi", 8000);
+      }
+      resetForm();
+      setStep(1);
+    } catch (error: any) {
+      showToast("error", "ilan verilemedi", error);
+      throw new Error(error);
+    }
   };
 
   return (
@@ -49,13 +95,14 @@ const MultiStepForm = () => {
       initialValues={
         {
           step: step,
-          animalType: "",
-          title: "",
-          breed: "",
-          gender: "",
-          description: "",
-          colors: [],
-          photos: [],
+          animalType: editingAd?.animalType || "",
+          title: editingAd?.title || "",
+          age: editingAd?.age || "",
+          breed: editingAd?.breed || "",
+          gender: editingAd?.gender || "",
+          description: editingAd?.description || "",
+          colors: editingAd?.colors || [],
+          images: editingAd?.images || [],
         } as AnimalFormState
       }
       onSubmit={submit}
@@ -71,7 +118,7 @@ const MultiStepForm = () => {
         values,
       }: FormikProps<AnimalFormState>) => {
         const pickImage = async () => {
-          if (values.photos.length < 3) {
+          if (values.images.length < 3) {
             let result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
               allowsEditing: true,
@@ -80,8 +127,8 @@ const MultiStepForm = () => {
             });
 
             if (!result.canceled) {
-              const newPhotos = [...values.photos, result.assets[0].uri];
-              setFieldValue("photos", newPhotos);
+              const newimages = [...values.images, result.assets[0].uri];
+              setFieldValue("images", newimages);
             }
           } else {
             showToast(
@@ -93,185 +140,160 @@ const MultiStepForm = () => {
         };
 
         const removePhoto = (index: number) => {
-          const newPhotos = values.photos.filter((p, i) => i !== index);
-          setFieldValue("photos", newPhotos);
+          const newimages = values.images.filter((p, i) => i !== index);
+          setFieldValue("images", newimages);
         };
 
         return (
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <Gradient>
-            <View
-              style={{
-                paddingBottom: 100,
-              }}
-            >
-              <View
-                style={{
-                  height: "80%",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {step === 1 && (
-                  <AnimalTypeSelector
-                    setFieldValue={setFieldValue}
-                    value={values.animalType}
-                  />
-                )}
-
-                {step === 2 && (
-                  <BreedSelector
-                    animalType={values.animalType}
-                    value={values.breed}
-                    setFieldValue={setFieldValue}
-                  />
-                )}
-
-                {step === 3 && (
-                  <GenderSelector
-                    value={values.gender}
-                    setFieldValue={setFieldValue}
-                  />
-                )}
-
-                {step === 4 && (
-                  <Animated.View
-                    entering={SlideInRight}
-                    exiting={SlideOutLeft}
+            <KeyboardAvoidingView style={{ flex: 1 }}>
+              <Gradient>
+                <View
+                  style={{
+                    paddingBottom: 100,
+                  }}
+                >
+                  <View
                     style={{
+                      height: "80%",
+                      width: "100%",
                       justifyContent: "center",
-                      padding: 12,
+                      alignItems: "center",
                     }}
                   >
-                    <CustomInput
-                      label="Name"
-                      value={values.title}
-                      onChangeText={handleChange("title")}
-                      placeholder="Animal Name"
-                      onTouchStart={handleBlur("title")}
-                    />
-                    <ColorSelector
-                      value={values.colors}
-                      setFieldValue={setFieldValue}
-                      error={touched.colors && errors.colors}
-                    />
-                  </Animated.View>
-                )}
+                    {step === 1 && (
+                      <AnimalTypeSelector
+                        setFieldValue={setFieldValue}
+                        value={values.animalType}
+                      />
+                    )}
 
-                {step === 5 && (
-                  <Animated.View entering={SlideInRight} exiting={FadeOut} style={{ width: "100%", padding: 10, justifyContent:'center' }}>
-                    <Text
-                      style={{
-                        fontSize: 32,
-                        fontWeight: "700",
-                        textAlign: "center",
-                        marginBottom:50
-                      }}
-                    >
-                      ÇOKKK AZ KALDI...
-                    </Text>
+                    {step === 2 && (
+                      <BreedSelector
+                        animalType={values.animalType}
+                        value={values.breed}
+                        setFieldValue={setFieldValue}
+                      />
+                    )}
 
-                    <Text style={styles.label}>Fotoğraf Ekle</Text>
-                    <ScrollView
-                      showsHorizontalScrollIndicator={false}
-                      horizontal
-                      contentContainerStyle={{
-                        marginVertical: 8,
-                      }}
-                    >
-                      <AddImageButton key={"add-image"} onPress={pickImage} />
+                    {step === 3 && (
+                      <GenderSelector
+                        value={values.gender}
+                        setFieldValue={setFieldValue}
+                      />
+                    )}
 
-                      {values.photos.map((photo, index) => (
-                        <FormImage
-                          key={index}
-                          imgUri={photo}
-                          index={index}
-                          onRemove={() => removePhoto(index)}
+                    {step === 4 && (
+                      <Animated.View
+                        entering={SlideInRight}
+                        exiting={SlideOutLeft}
+                        style={{
+                          justifyContent: "center",
+                          padding: 12,
+                        }}
+                      >
+                        <CustomInput
+                          label="Name"
+                          value={values.title}
+                          onChangeText={handleChange("title")}
+                          placeholder="Animal Name"
+                          onTouchStart={handleBlur("title")}
                         />
-                      ))}
-                    </ScrollView>
+                        <ColorSelector
+                          value={values.colors}
+                          setFieldValue={setFieldValue}
+                          error={touched.colors && errors.colors}
+                        />
+                      </Animated.View>
+                    )}
 
-                    <CustomInput
-                      label="Description"
-                      value={values.description}
-                      onChangeText={handleChange("description")}
-                      placeholder="Çok sevecen huylu, oyuncu biir kedidir. Onun yeni kahramanı olur musun?"
-                      onTouchStart={handleBlur("description")}
-                      multiline
-                      numberOfLines={6}
-                      style={{
-                        width: "90%",
-                        backgroundColor: colors.white,
-                        borderRadius: 16,
-                        borderWidth: 1,
-                        borderColor: colors.purple_700,
-                        padding: 12,
-                      }}
-                      textAlignVertical="top"
-                      error={touched.description && errors.description}
-                    />
-                  </Animated.View>
-                )}
-              </View>
+                    {step === 5 && (
+                      <Animated.ScrollView
+                        entering={SlideInRight}
+                        exiting={FadeOut}
+                        contentContainerStyle={{
+                          width: "100%",
+                          padding: 10,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 32,
+                            fontWeight: "700",
+                            textAlign: "center",
+                            marginVertical: 50,
+                          }}
+                        >
+                          ÇOKKK AZ KALDI...
+                        </Text>
 
-              {/* BUTTONS */}
-              <View style={styles.buttonContainer}>
-                {step > 1 && (
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      handlePrev();
-                    }}
-                  >
-                    <Text style={styles.buttonText}>Back</Text>
-                  </TouchableOpacity>
-                )}
-                {step < 5 && (
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      if (validateStepManually(step, values)) {
-                        handleNext();
-                      } else {
-                        showToast(
-                          "error",
-                          "Bilgiler eksik",
-                          "Bİlgileri eksiksiz giriniz"
-                        );
-                      }
-                    }}
-                  >
-                    <Text style={styles.buttonText}>Next</Text>
-                  </TouchableOpacity>
-                )}
-                {step === 5 && (
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                      if (validateStepManually(step, values)) {
-                        handleSubmit();
-                        showToast(
-                          "success",
-                          "Başarılı",
-                          "İlanınız başarıyla eklendi",
-                          8000
-                        );
-                      } else {
-                        showToast(
-                          "error",
-                          "Bilgiler eksik",
-                          "Bİlgileri eksiksiz giriniz",
-                        );
-                      }
-                    }}
-                  >
-                    <Text style={styles.buttonText}>Submit</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-            </Gradient>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: "bold",
+                            color: "#333",
+                            marginBottom: 5,
+                          }}
+                        >
+                          Fotoğraf Ekle
+                        </Text>
+                        <ScrollView
+                          showsHorizontalScrollIndicator={false}
+                          horizontal
+                          contentContainerStyle={{
+                            marginVertical: 8,
+                          }}
+                        >
+                          <AddImageButton
+                            key={"add-image"}
+                            onPress={pickImage}
+                          />
+
+                          {values.images.map((image, index) => (
+                            <FormImage
+                              key={index}
+                              imgUri={image}
+                              index={index}
+                              onRemove={() => removePhoto(index)}
+                            />
+                          ))}
+                        </ScrollView>
+
+                        <CustomInput
+                          label="Description"
+                          value={values.description}
+                          onChangeText={handleChange("description")}
+                          placeholder="Çok sevecen huylu, oyuncu biir kedidir. Onun yeni kahramanı olur musun?"
+                          onTouchStart={handleBlur("description")}
+                          multiline
+                          numberOfLines={6}
+                          style={{
+                            width: "90%",
+                            backgroundColor: colors.white,
+                            borderRadius: 16,
+                            borderWidth: 1,
+                            borderColor: colors.purple_700,
+                            padding: 12,
+                          }}
+                          textAlignVertical="top"
+                          error={touched.description && errors.description}
+                        />
+                      </Animated.ScrollView>
+                    )}
+                  </View>
+
+                  {/* BUTTONS */}
+                  <FormButtons
+                    step={step}
+                    values={values}
+                    handlePrev={handlePrev}
+                    handleNext={handleNext}
+                    handleSubmit={handleSubmit}
+                  />
+                </View>
+              </Gradient>
+            </KeyboardAvoidingView>
           </TouchableWithoutFeedback>
         );
       }}
@@ -280,32 +302,3 @@ const MultiStepForm = () => {
 };
 
 export default MultiStepForm;
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    width: "100%",
-    height: "20%",
-    justifyContent: "space-evenly",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  button: {
-    height: "40%",
-    width: "40%",
-    backgroundColor: colors.purple_500,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 24,
-  },
-  buttonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  label: {
-    fontSize: 20,
-    fontWeight:'bold',
-    color: "#333",
-    marginBottom: 5,
-  },
-});

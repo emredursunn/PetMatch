@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Breed } from "../../../types/Ad";
-import SelectButton from "../shared_form_components/SelectButton";
+import SelectBox from "../shared_form_components/SelectBox";
 
 type Props = {
   item: Breed;
@@ -11,7 +11,7 @@ type Props = {
 
 const RenderItem = ({ item, selectedValue, setSelectedValue }: Props) => {
   return (
-    <SelectButton
+    <SelectBox
       key={item.name}
       value={item.name}
       selectedValue={selectedValue}
@@ -29,7 +29,7 @@ const RenderItem = ({ item, selectedValue, setSelectedValue }: Props) => {
       >
         {item.name}
       </Text>
-    </SelectButton>
+    </SelectBox>
   );
 };
 

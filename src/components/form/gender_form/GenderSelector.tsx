@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import SelectButton from "../shared_form_components/SelectButton";
+import SelectBox from "../shared_form_components/SelectBox";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FormikErrors } from "formik";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -56,7 +56,7 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
           justifyContent: "space-around",
         }}
       >
-        <SelectButton
+        <SelectBox
           selectedValue={value}
           setSelected={setSelectedGender}
           value="male"
@@ -75,8 +75,8 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
           >
             Male
           </Text>
-        </SelectButton>
-        <SelectButton
+        </SelectBox>
+        <SelectBox
           selectedValue={selectedGender}
           setSelected={setSelectedGender}
           value="female"
@@ -95,7 +95,7 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
           >
             Female
           </Text>
-        </SelectButton>
+        </SelectBox>
       </View>
     </Animated.View>
   );

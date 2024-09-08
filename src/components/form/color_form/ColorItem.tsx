@@ -1,9 +1,8 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Color } from "../../../types/AnimalFormState";
 import { colors } from "../../../utils/constants";
-import Animated, { FadeInDown, SlideInDown } from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 type Props = {
   color: Color;
@@ -18,11 +17,17 @@ const ColorItem = ({
   setSelectedColors,
   selectedColors,
 }: Props) => {
-  const isSelected = selectedColors.includes(color);
+  // Determine if the color is selected by comparing object properties
+  const isSelected = selectedColors.some(
+    (c) => c.code === color.code && c.name === color.name
+  );
 
   const handleOnPress = () => {
+    // Toggle the color selection
     if (isSelected) {
-      setSelectedColors(() => selectedColors.filter((c) => c !== color));
+      setSelectedColors((prev) => prev.filter(
+        (c) => c.code !== color.code || c.name !== color.name
+      ));
     } else if (selectedColors.length < 2) {
       setSelectedColors((prev) => [...prev, color]);
     }
@@ -33,9 +38,12 @@ const ColorItem = ({
       style={[styles.item, { backgroundColor: color.code }]}
       entering={FadeInDown.delay(75 * index)}
     >
-      <TouchableOpacity onPress={handleOnPress} style={{width:'100%',height:'100%'}}>
+      <TouchableOpacity
+        onPress={handleOnPress}
+        style={styles.touchable}
+      >
         {isSelected && (
-          <View style={[styles.item]}>
+          <View style={styles.checkmarkContainer}>
             <AntDesign
               name="check"
               size={24}
@@ -54,7 +62,19 @@ const styles = StyleSheet.create({
   item: {
     width: 80,
     height: 80,
-    borderRadius: 45,
+    borderRadius: 40, // Adjusted for better visual appearance
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 4, // Added margin for better spacing
+  },
+  touchable: {
+    width: '100%',
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkmarkContainer: {
+    ...StyleSheet.absoluteFillObject, // Fill the entire area for the checkmark
     alignItems: "center",
     justifyContent: "center",
   },
