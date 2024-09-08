@@ -1,13 +1,15 @@
 import { ViewStyle } from "react-native";
+import { Color } from "./AnimalFormState";
 
 export type Ad = {
-  id?:string,
-  animalType: AnimalType;
+  id:string,
+  userId:string,
+  animalType: string;
   title: string;
   age: string;
   gender: string;
   breed: string;
-  colors: string[];
+  colors: Color[];
   images: string[];
   contact: string;
   description?: string;

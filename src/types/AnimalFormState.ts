@@ -3,11 +3,12 @@ export interface AnimalFormState {
   step: number;
   animalType: string;
   title: string;
+  age:string;
   breed: string;
   gender: string;
   description: string;
   colors: Color[];
-  photos: string[];
+  images: string[];
 }
 
 export type Color = {
