@@ -7,11 +7,12 @@ import { ReactNode } from "react";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors } from "../utils/constants";
+import { ProfileStack } from "./ProfileStack";
 
 type TabParams = {
   CreateScreen: undefined;
   MapScreen: undefined;
-  ProfileScreen: undefined;
+  ProfileStack: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParams>();
@@ -84,8 +85,8 @@ export function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={[styles.tabBarItem, { top: focused ? -8 : 0 }]}>

@@ -5,40 +5,36 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { removeUser, setUser } from "../store/authSlice";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
+import { setUser, signIn } from "../store/authSlice";
 import { getUser } from "../services/firebaseService/dbService";
 import { getFromStorage } from "../utils/helperFunctions";
 
 export const RootNavigation = () => {
-  const [loading, setLoading] = useState(true);
-
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user, loading } = useSelector((state: RootState) => state.auth);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
     const fetchExistUser = async () => {
       try {
-        setLoading(true);
         const uid = await getFromStorage("uid");
         if (uid) {
           const usr = await getUser(uid);
           if (usr) {
-            dispatch(setUser(usr));
+            dispatch(signIn({ email: usr.email, password: usr.password }));
           }
         }
       } catch (error: any) {
-        throw new Error(error);
+        console.error("Error fetching user:", error);
       } finally {
-        setLoading(false);
+        setIsCheckingAuth(false);
       }
     };
-    fetchExistUser();
-  }, []);
 
-  if (loading) {
-    // Render a loading indicator while checking the token
+    fetchExistUser();
+  }, [dispatch]);
+
+  if (isCheckingAuth || loading) {
     return <LoadingScreen />;
   }
 
@@ -52,7 +48,7 @@ export const RootNavigation = () => {
 export default RootNavigation;
 
 // Example LoadingScreen component
-const LoadingScreen = () => {
+export const LoadingScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator size="large" />
