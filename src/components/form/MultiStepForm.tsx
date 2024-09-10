@@ -15,10 +15,7 @@ import ColorSelector from "./color_form/ColorSelector";
 import { showToast } from "../../utils/helperFunctions";
 import BreedSelector from "./breed_from/BreedSelector";
 import AnimalTypeSelector from "./animal_type_form/AnimalTypeSelector";
-import Animated, {
-  SlideInRight,
-  SlideOutLeft,
-} from "react-native-reanimated";
+import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 import AddImageButton from "./image_form/AddImageButton";
 import FormImage from "./image_form/FormImage";
 import Gradient from "../Gradient";
@@ -30,6 +27,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { createAd, updateAd } from "../../store/adSlice";
 import AgeSelector from "./age_form/AgeSelector";
 import LocationSelector from "./location_form/LocationSelector";
+import { colors } from "../../utils/constants";
 
 type Props = {
   editingAd?: Ad;
@@ -70,12 +68,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
       } as Ad;
       if (editingAd && setEditingAd) {
         dispatch(updateAd(ad));
-        showToast(
-          "success",
-          "Success",
-          "Ad is updated succesfully",
-          5000
-        );
+        showToast("success", "Success", "Ad is updated succesfully", 5000);
         setEditingAd(null);
       } else {
         dispatch(createAd(ad));
@@ -106,7 +99,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
             city: "",
             district: "",
             street: "",
-          }
+          },
         } as AnimalFormState
       }
       onSubmit={submit}
@@ -152,18 +145,14 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <KeyboardAvoidingView style={{ flex: 1 }}>
               <Gradient>
-                <View
-                  style={{
-                    paddingBottom: 100,
-                  }}
-                >
-                  <View
-                    style={{
-                      height: "80%",
-                      width: "100%",
-                      justifyContent: "center",
-                    }}
-                  >
+                    {/* BUTTONS */}
+                    <FormButtons
+                      step={step}
+                      values={values}
+                      handlePrev={handlePrev}
+                      handleNext={handleNext}
+                      handleSubmit={handleSubmit}
+                    />
                     {step === 1 && (
                       <AnimalTypeSelector
                         setFieldValue={setFieldValue}
@@ -193,8 +182,9 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                         contentContainerStyle={{
                           width: "100%",
                           padding: 16,
-                          marginTop:36,
-                          gap:16,
+                          paddingTop: 36,
+                          paddingBottom: 200,
+                          gap: 16,
                           justifyContent: "center",
                         }}
                       >
@@ -227,6 +217,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                         contentContainerStyle={{
                           width: "100%",
                           padding: 10,
+                          paddingBottom:150,
                           justifyContent: "center",
                         }}
                       >
@@ -245,7 +236,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                           style={{
                             fontSize: 20,
                             fontWeight: "bold",
-                            color: "#333",
+                            color: colors.black,
                             marginBottom: 5,
                           }}
                         >
@@ -253,10 +244,11 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                         </Text>
                         <View
                           style={{
-                            flexDirection:'row',
-                            flexWrap:'wrap',
+                            flexDirection: "row",
+                            width:'100%',
+                            flexWrap: "wrap",
                             marginVertical: 8,
-                            gap:10
+                            gap: 10,
                           }}
                         >
                           <AddImageButton
@@ -284,7 +276,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                           numberOfLines={6}
                           inputStyle={{
                             width: "100%",
-                            height:100
+                            height: 100,
                           }}
                           textAlignVertical="top"
                           error={touched.description && errors.description}
@@ -298,17 +290,6 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                         error={touched.location && errors.location}
                       />
                     )}
-                  </View>
-
-                  {/* BUTTONS */}
-                  <FormButtons
-                    step={step}
-                    values={values}
-                    handlePrev={handlePrev}
-                    handleNext={handleNext}
-                    handleSubmit={handleSubmit}
-                  />
-                </View>
               </Gradient>
             </KeyboardAvoidingView>
           </TouchableWithoutFeedback>

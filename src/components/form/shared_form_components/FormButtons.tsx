@@ -5,6 +5,7 @@ import {
 } from "../../../utils/helperFunctions";
 import { colors } from "../../../utils/constants";
 import { AnimalFormState } from "../../../types/Ad";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 type Props = {
   step: number;
@@ -22,7 +23,6 @@ const FormButtons = ({
   handleSubmit,
 }: Props) => (
   <View style={styles.buttonContainer}>
-
     {/* BACK */}
     {step > 1 && (
       <TouchableOpacity
@@ -31,7 +31,7 @@ const FormButtons = ({
           handlePrev();
         }}
       >
-        <Text style={styles.buttonText}>Back</Text>
+        <MaterialIcons name="arrow-back-ios-new" size={24} color={colors.white} />
       </TouchableOpacity>
     )}
 
@@ -47,7 +47,7 @@ const FormButtons = ({
           }
         }}
       >
-        <Text style={styles.buttonText}>Next</Text>
+        <MaterialIcons name="arrow-forward-ios" size={24} color={colors.white} />
       </TouchableOpacity>
     )}
 
@@ -63,7 +63,7 @@ const FormButtons = ({
           }
         }}
       >
-        <Text style={styles.buttonText}>Submit</Text>
+        <MaterialIcons name="pets" size={24} color={colors.white} />
       </TouchableOpacity>
     )}
   </View>
@@ -74,10 +74,10 @@ export default FormButtons;
 const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
-    height: "20%",
     justifyContent: "space-evenly",
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 40,
   },
   button: {
     height: 60,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purple_500,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 18,
+    borderRadius: 12,
   },
   buttonText: {
     color: colors.white,

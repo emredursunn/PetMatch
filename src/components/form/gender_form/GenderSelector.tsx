@@ -29,7 +29,7 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
   }, [selectedGender]);
 
   return (
-    <Animated.View entering={SlideInRight} exiting={SlideOutLeft}>
+    <Animated.View entering={SlideInRight} exiting={SlideOutLeft} style={{flex:1,justifyContent:'center',paddingBottom:30}}>
       <Text
         style={{
           textAlign: "center",

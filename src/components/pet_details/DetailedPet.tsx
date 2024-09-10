@@ -25,12 +25,12 @@ const DetailedPet = ({ ad }: Props) => {
   };
   const [distanceAway, setDistanceAway] = useState<number | null>(null);
 
-  // useEffect(() => {
-  //   if (myCoords.latitude && myCoords.longitude) {
-  //     const distanceValue = distance(myCoords as LatLng, petCoords);
-  //     setDistanceAway(distanceValue);
-  //   }
-  // }, [myCoords, petCoords]);
+  useEffect(() => {
+    if (myCoords.latitude && myCoords.longitude) {
+      const distanceValue = distance(myCoords as LatLng, petCoords);
+      setDistanceAway(distanceValue);
+    }
+  }, [myCoords, petCoords]);
 
   return (
     <View style={styles.box}>
@@ -49,6 +49,9 @@ const DetailedPet = ({ ad }: Props) => {
               />
             ))}
           </View>
+        </CustomBox>
+        <CustomBox>
+          <Text style={styles.text}>{ad.breed}</Text>
         </CustomBox>
       </View>
       {distanceAway ? (

@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent:'center',
-    paddingBottom:20
+    paddingBottom:100
   },
   error: {
     fontSize: 12,

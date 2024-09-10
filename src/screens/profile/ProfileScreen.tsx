@@ -165,7 +165,7 @@ const ProfileScreen = () => {
             marginBottom: 4,
           }}
         >
-          EMRE DURSUN
+          {user?.fullName}
         </Text>
         <Pressable
           onPress={handleEdit}
@@ -185,13 +185,15 @@ const ProfileScreen = () => {
           </Text>
         </Pressable>
 
-        <View style={[{ width: "100%" }, styles.container]}>
+        <View style={[{ width: "100%",height:'70%' }, styles.container]}>
           <SectionList
             sections={sections}
             keyExtractor={(item) => item.key}
             renderItem={() => null} // Her bir öğeyi renderSection içinde render ediyoruz
             renderSectionHeader={renderSection}
+            contentContainerStyle={{paddingBottom:100}}
           />
+
         </View>
       </View>
     </Gradient>

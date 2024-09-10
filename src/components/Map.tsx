@@ -69,11 +69,6 @@ const Map = ({ currentLocation, ads, handleAdPress, handleRefresh }: Props) => {
               <View
                 style={[
                   styles.clusterMarker,
-                  {
-                    width: 100,
-                    height: 100,
-                    borderRadius: 50,
-                  },
                 ]}
               >
                 <Text style={styles.clusterText}>{cluster.ads.length}</Text>
@@ -103,9 +98,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageMarker: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
   clusterMarker: {
     width: 60,

@@ -22,6 +22,9 @@ const Ads = () => {
 
   useEffect(() => {
     if (user && user.adIds.length > 0 && ads.length === 0) {
+      console.log(ads)
+      console.log(ads.length)
+      console.log(user.adIds)
       dispatch(fetchAdsByIds(user.adIds));
     }
   }, [user]);
