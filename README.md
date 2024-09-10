@@ -1,4 +1,4 @@
-# Pet Match
+# Pet Match 🐾
 The app allows you to find the friend of your dreams by looking at pet ads in your area, or to open an ad yourself and adopt your pet.
 
 ---
