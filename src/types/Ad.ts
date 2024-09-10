@@ -1,9 +1,8 @@
-import { ViewStyle } from "react-native";
-import { Color } from "./AnimalFormState";
+import { TextStyle, ViewStyle } from "react-native";
 
 export type Ad = {
-  id:string,
-  userId:string,
+  id: string;
+  userId: string;
   animalType: string;
   title: string;
   age: string;
@@ -13,6 +12,7 @@ export type Ad = {
   images: string[];
   contact: string;
   description?: string;
+  location: ILocation;
 };
 
 export type AnimalType = {
@@ -22,6 +22,40 @@ export type AnimalType = {
 };
 
 export type Breed = {
-  id:string,
-  name:string
+  id: string;
+  name: string;
+};
+
+export type Color = {
+  name: string;
+  code: TextStyle["color"];
+};
+
+export type ILocation = {
+  city: string;
+  district: string;
+  street: string;
+  coordinates: {
+    longitude: number;
+    latitude: number;
+  };
+};
+
+export interface AnimalFormState {
+  step: number;
+  animalType: string;
+  title: string;
+  age: string;
+  breed: string;
+  gender: string;
+  description: string;
+  colors: Color[];
+  images: string[];
+  location: Omit<ILocation, "coordinates">;
+}
+
+export type Cluster = {
+  latitude:number,
+  longitude:number,
+  ads:Ad[]
 }
