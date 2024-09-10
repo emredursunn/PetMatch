@@ -72,19 +72,19 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
         dispatch(updateAd(ad));
         showToast(
           "success",
-          "Başarılı",
-          "İlanınız başarıyla güncellendi",
+          "Success",
+          "Ad is updated succesfully",
           5000
         );
         setEditingAd(null);
       } else {
         dispatch(createAd(ad));
-        showToast("success", "Başarılı", "İlanınız başarıyla eklendi", 8000);
+        showToast("success", "Success", "Ad is created succesfully", 8000);
       }
       resetForm();
       setStep(1);
     } catch (error: any) {
-      showToast("error", "ilan verilemedi", error);
+      showToast("error", "Error", error);
       throw new Error(error);
     }
   };
@@ -137,8 +137,8 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
           } else {
             showToast(
               "info",
-              "Kapasite dolu",
-              "En fazla 3 resim yüklenebilir."
+              "Maximum capacity",
+              "Only 3 images can get load.."
             );
           }
         };
