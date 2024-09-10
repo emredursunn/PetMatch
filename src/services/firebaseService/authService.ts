@@ -7,6 +7,7 @@ import { auth, db } from "../../../firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 import { showToast } from "../../utils/helperFunctions";
 import { IUser } from "../../types/IUser";
+import { createUser } from "./dbService";
 
 export const signUpAsync = async ({
   fullName,
@@ -25,10 +26,11 @@ export const signUpAsync = async ({
       email,
       password
     );
-    await setDoc(doc(db, "users", userCredential.user.uid), {
+    await createUser({
       uid: userCredential.user.uid,
       fullName,
       email: userCredential.user.email,
+      password,
       adIds: [],
       userPic: "",
       phone
