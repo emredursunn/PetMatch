@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { setUser, signIn } from "../store/authSlice";
+import { signIn } from "../store/authSlice";
 import { getUser } from "../services/firebaseService/dbService";
 import { getFromStorage } from "../utils/helperFunctions";
+import { LoadingScreen } from "../components/Loading";
 
 export const RootNavigation = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,11 +48,3 @@ export const RootNavigation = () => {
 
 export default RootNavigation;
 
-// Example LoadingScreen component
-export const LoadingScreen = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size="large" />
-    </View>
-  );
-};

@@ -13,6 +13,6 @@ const Stack = createNativeStackNavigator<ProfileStackParams>();
 export const ProfileStack = () => (
   <Stack.Navigator initialRouteName="Profile" screenOptions={{headerShown:false}}>
     <Stack.Screen name="Profile" component={ProfileScreen} />
-    <Stack.Screen name="Ads" component={Ads} />
+    <Stack.Screen name="Ads" component={Ads} options={{headerShown:true}}/>
   </Stack.Navigator>
 );
