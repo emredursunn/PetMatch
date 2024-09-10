@@ -1,41 +1,66 @@
-import { Alert, StyleSheet, View } from "react-native";
-import React, { useRef, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import Map from "../components/Map";
 import useLocation from "../hooks/useLocation";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import BottomSheet from "../components/BottomSheet";
-import { AnimalMarker } from "../types/AnimalMarker";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { dummyPetList } from "../utils/dummy";
+import { showToast } from "../utils/helperFunctions";
+import { Ad } from "../types/Ad";
+import { getAllAds } from "../services/firebaseService/dbService";
+import { LoadingScreen } from "../components/Loading";
 
 const MapScreen = () => {
   const { location, errorMsg } = useLocation();
-  const [selectedMarker, setSelectedMarker] = useState<AnimalMarker | null>(
-    null
-  );
+  const [allAds, setAllAds] = useState<Ad[]>([]);
+  const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchAds = async () => {
+      setLoading(true);
+      try {
+        const ads = await getAllAds();
+        setAllAds(ads);
+      } catch (error) {
+        showToast("error", "Hata meydana geldi", "");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAds();
+  }, [refresh]);
 
   if (errorMsg) {
-    Alert.alert(errorMsg);
+    showToast("error", "Konum hatası", errorMsg);
   }
 
-  const handleMarkerPress = (marker: AnimalMarker) => {
-    setSelectedMarker(marker);
+  const handleRefresh = () => {
+    setRefresh(value => !value)
+  }
+
+  const handleAdPress = (ad: Ad) => {
+    setSelectedAd(ad);
     bottomSheetModalRef.current?.present();
   };
 
   return (
     <View style={styles.container}>
-      <Map
-        currentLocation={location}
-        markers={dummyPetList}
-        handleMarkerPress={handleMarkerPress}
-      />
-      {selectedMarker && (
-        <BottomSheet marker={selectedMarker} ref={bottomSheetModalRef} />
+      {!loading ? (
+        <>
+          <Map
+            currentLocation={location}
+            ads={allAds}
+            handleRefresh={handleRefresh}
+            handleAdPress={handleAdPress}
+          />
+          {selectedAd && (
+            <BottomSheet ad={selectedAd} ref={bottomSheetModalRef} />
+          )}
+        </>
+      ) : (
+        <LoadingScreen />
       )}
     </View>
   );
