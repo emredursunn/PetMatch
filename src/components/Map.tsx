@@ -1,68 +1,94 @@
-import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import MapView, { Marker, Region } from "react-native-maps";
 import * as Location from "expo-location";
-import { AnimalMarker } from "../types/AnimalMarker";
-import { defaultRegion } from "../utils/constants";
+import { colors, defaultRegion } from "../utils/constants";
 import Zoom from "./Zoom";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { Ad, Cluster } from "../types/Ad";
+import { groupAdsByDistance } from "../utils/helperFunctions";
 
 type Props = {
   currentLocation?: Location.LocationObject;
-  markers: AnimalMarker[];
-  handleMarkerPress: (marker: AnimalMarker) => void;
+  ads: Ad[];
+  handleAdPress: (ad: Ad) => void;
+  handleRefresh : () => void
 };
 
-const Map = ({ currentLocation, markers, handleMarkerPress }: Props) => {
-  const mapRef = useRef<MapView>(null);
-
+const Map = ({ currentLocation, ads, handleAdPress, handleRefresh }: Props) => {
+  const [clusters, setClusters] = useState<Cluster[]>([]);
   const [region, setRegion] = useState<Region>(defaultRegion);
+  const [zoomLevel, setZoomLevel] = useState<number>(region.latitudeDelta);
 
   useEffect(() => {
-    setRegion(() =>
-      currentLocation
-        ? {
-            latitude: currentLocation.coords.latitude,
-            longitude: currentLocation.coords.longitude,
-            latitudeDelta: 0.5122,
-            longitudeDelta: 0.1921,
-          }
-        : defaultRegion
-    );
-  }, [currentLocation]);
+    const calculateZoomLevel = () => {
+      const zoomThreshold = 0.6; // threshold value for zoom level
+      if (zoomLevel > zoomThreshold) {
+        const maxDistance = 10; // 10 km
+        const updatedClusters = groupAdsByDistance(ads, maxDistance);
+        setClusters(updatedClusters);
+      } else {
+        setClusters(
+          ads.map((ad) => ({
+            latitude: ad.location.coordinates.latitude,
+            longitude: ad.location.coordinates.longitude,
+            ads: [ad],
+          }))
+        );
+      }
+    };
+
+    calculateZoomLevel();
+  }, [region, ads, zoomLevel]);
+
+  const handleRegionChangeComplete = (newRegion: Region) => {
+    setRegion(newRegion);
+    setZoomLevel(newRegion.latitudeDelta);
+  };
 
   return (
     <View style={styles.container}>
-      <MapView ref={mapRef} style={styles.map} region={region} zoomEnabled>
-        {region && (
+      <MapView
+        style={styles.map}
+        region={region}
+        onRegionChangeComplete={handleRegionChangeComplete}
+        zoomEnabled
+      >
+        {clusters.map((cluster, index) => (
           <Marker
+            key={index}
             coordinate={{
-              latitude: region.latitude,
-              longitude: region.longitude,
+              latitude: cluster.latitude,
+              longitude: cluster.longitude,
             }}
-            title="You"
+            title={cluster.ads.length > 1 ? undefined : cluster.ads[0].title}
+            onPress={() =>
+              cluster.ads.length === 1 && handleAdPress(cluster.ads[0])
+            }
           >
-            <FontAwesome5 name="walking" size={48} color="purple" />
-          </Marker>
-        )}
-        {markers.map((marker) => (
-          <Marker
-            key={marker.id}
-            coordinate={{
-              latitude: marker.latitude,
-              longitude: marker.longitude,
-            }}
-            title={marker.data.title}
-            onPress={() => handleMarkerPress(marker)}
-          >
-            <Image
-              source={{ uri: marker.data.images[0] }}
-              style={styles.markerImage}
-            />
+            {cluster.ads.length > 1 ? (
+              <View
+                style={[
+                  styles.clusterMarker,
+                  {
+                    width: 100,
+                    height: 100,
+                    borderRadius: 50,
+                  },
+                ]}
+              >
+                <Text style={styles.clusterText}>{cluster.ads.length}</Text>
+              </View>
+            ) : (
+              <Image
+                source={{ uri: cluster.ads[0].images[0] }}
+                style={styles.imageMarker}
+                resizeMode="cover"
+              />
+            )}
           </Marker>
         ))}
       </MapView>
-      <Zoom region={region} setRegion={setRegion} ref={mapRef} />
+      <Zoom region={region} setRegion={setRegion} handleRefresh={handleRefresh} />
     </View>
   );
 };
@@ -74,12 +100,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
   },
-  markerImage: {
+  imageMarker: {
     width: 100,
     height: 100,
     borderRadius: 50,
+  },
+  clusterMarker: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.purple_700,
+  },
+  clusterText: {
+    color: colors.white,
+    fontWeight: "bold",
   },
 });

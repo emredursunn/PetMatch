@@ -6,42 +6,35 @@ import { colors } from "../utils/constants";
 type Props = {
   region: Region;
   setRegion: React.Dispatch<React.SetStateAction<Region>>;
+  handleRefresh: () => void;
 };
 
-const Zoom = forwardRef<MapView, Props>(({ setRegion, region }, ref) => {
+const Zoom = ({ setRegion, region, handleRefresh }: Props) => {
   const zoomIn = () => {
-    if (region && ref) {
+    if (region) {
       const { latitudeDelta, longitudeDelta } = region;
-      const newLatitudeDelta = latitudeDelta * 0.9;
-      const newLongitudeDelta = longitudeDelta * 0.9;
+      const newLatitudeDelta = latitudeDelta * 0.5;
+      const newLongitudeDelta = longitudeDelta * 0.5;
       const newRegion = {
         ...region,
         latitudeDelta: newLatitudeDelta,
         longitudeDelta: newLongitudeDelta,
       };
       setRegion(newRegion);
-      (ref as React.RefObject<MapView>).current?.animateToRegion(
-        newRegion,
-        500
-      );
     }
   };
 
   const zoomOut = () => {
-    if (region && ref) {
+    if (region) {
       const { latitudeDelta, longitudeDelta } = region;
-      const newLatitudeDelta = latitudeDelta * 1.1;
-      const newLongitudeDelta = longitudeDelta * 1.1;
+      const newLatitudeDelta = latitudeDelta * 1.5;
+      const newLongitudeDelta = longitudeDelta * 1.5;
       const newRegion = {
         ...region,
         latitudeDelta: newLatitudeDelta,
         longitudeDelta: newLongitudeDelta,
       };
       setRegion(newRegion);
-      (ref as React.RefObject<MapView>).current?.animateToRegion(
-        newRegion,
-        500
-      );
     }
   };
 
@@ -53,30 +46,33 @@ const Zoom = forwardRef<MapView, Props>(({ setRegion, region }, ref) => {
       <Pressable style={styles.zoomButton} onPress={zoomOut}>
         <Text style={styles.zoomButtonText}>-</Text>
       </Pressable>
+      <Pressable style={styles.zoomButton} onPress={handleRefresh}>
+        <Text style={styles.zoomButtonText}>↻</Text>
+      </Pressable>
     </View>
   );
-});
+};
 
 export default Zoom;
 
 const styles = StyleSheet.create({
   zoomControls: {
     position: "absolute",
-    top: '30%',
+    top: "30%",
     left: 20,
-    gap:16
+    gap: 16,
   },
   zoomButton: {
     alignItems: "center",
     justifyContent: "center",
-    borderWidth:0.5,
+    borderWidth: 0.5,
     borderRadius: 12,
     width: 35,
     height: 35,
-    backgroundColor:'rgba(255,255,255,1)',
-    shadowColor:colors.black,
-    shadowOffset:{height:4,width:2},
-    elevation:10,    
+    backgroundColor: "rgba(255,255,255,1)",
+    shadowColor: colors.black,
+    shadowOffset: { height: 4, width: 2 },
+    elevation: 10,
   },
   zoomButtonText: {
     fontSize: 24,
