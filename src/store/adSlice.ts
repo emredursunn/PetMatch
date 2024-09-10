@@ -8,23 +8,10 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { Color } from "../types/AnimalFormState";
 import { db } from "../../firebaseConfig";
 import { uploadImageToStorage } from "../services/firebaseService/dbService";
+import { Ad } from "../types/Ad";
 
-export interface Ad {
-  id: string;
-  userId: string;
-  animalType: string;
-  title: string;
-  age: string;
-  gender: string;
-  breed: string;
-  colors: Color[];
-  images: string[];
-  contact: string;
-  description?: string;
-}
 
 interface AdState {
   ads: Ad[];
@@ -142,10 +129,6 @@ const adSlice = createSlice({
       .addCase(fetchAdsByIds.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch ads";
-      })
-      .addCase(deleteAdById.pending, (state) => {
-        state.loading = true;
-        state.error = null;
       })
       .addCase(deleteAdById.fulfilled, (state, action) => {
         state.loading = false;
