@@ -1,17 +1,54 @@
 # Pet Match
+The app allows you to find the friend of your dreams by looking at pet ads in your area, or to open an ad yourself and adopt your pet.
 
-**Pet Adoption Platform**
+---
 
-**still in development**
+https://github.com/user-attachments/assets/629fc025-bb9a-45b8-a92d-d0e7515f1c10
+
+## Features 🌟
+#### Create ad easily.
+
+#### Look for your dream pet in map.
+ 
+#### Edit your ad easiliy.
+
+---
 
 
+## Installation
+#### Clone the repository:
 
-<img src="https://github.com/user-attachments/assets/c294ed4b-8339-4cbf-a933-8d4575ab9172" width="350" height="550">
+```git clone https://github.com/emredursunn/flight-management.git```
 
-<img src="https://github.com/user-attachments/assets/7db09e89-b148-49a6-8d84-237ab97f3904" width="350" height="550">
+```cd PETMATCH```
 
-<img src="https://github.com/user-attachments/assets/da412577-5252-4db9-a26c-6aa02157281c" width="350" height="550">
+```npm install```
 
-<img src="https://github.com/user-attachments/assets/e6ac36ca-ab1f-44cb-8669-5f98ac686464" width="350" height="550">
+```npm start```
 
-<img src="https://github.com/user-attachments/assets/e6ac36ca-ab1f-44cb-8669-5f98ac686464" width="350" height="550">
+### You have to create a .env file and add GOOGLE_MAPS_API_KEY from "https://developers.google.com/maps/" and API_KEY from "https://thecatapi.com/"
+
+---
+
+## Technologies Used 🛠️
+
+**React Native**
+
+**TypeScript**
+
+**Firebase**
+
+**Google MapView** 
+
+**Redux Toolkit** - for state management
+
+**React Query** - for fetch data from API
+
+**react-native-reanimated** - for animations
+
+**Formik and Yup** - for form operations. 
+
+---
+
+## Contact
+Mail: emredursun908@gmail.com
