@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/629fc025-bb9a-45b8-a92d-d0e7515f1c10
 ## Installation
 #### Clone the repository:
 
-```git clone https://github.com/emredursunn/flight-management.git```
+```git clone https://github.com/emredursunn/PetMatch.git```
 
 ```cd PETMATCH```
 
