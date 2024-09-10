@@ -61,7 +61,7 @@ export const validateStepManually = (step: number, values: AnimalFormState) => {
     case 4:
       return !!values.title && values.colors.length > 0;
     case 5:
-      return values.photos.length > 0 && values.description.trim().length > 0;
+      return values.images.length > 0 && values.description.trim().length > 0;
     default:
       return false;
   }

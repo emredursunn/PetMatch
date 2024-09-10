@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, ViewStyle } from "react-native";
+import { ColorValue, Pressable, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import React, { ReactNode } from "react";
 import { colors } from "../../../utils/constants";
 
@@ -7,7 +7,8 @@ type Props = {
   selectedValue: any;
   setSelected: (value: any) => void;
   children: ReactNode;
-  customStyle?: ViewStyle;
+  customStyle?: StyleProp<ViewStyle>;
+  selectedColor?: ColorValue
 };
 
 const SelectBox = ({
@@ -16,6 +17,7 @@ const SelectBox = ({
   setSelected,
   children,
   customStyle,
+  selectedColor
 }: Props) => {
   const isSelected = selectedValue === value;
   return (
@@ -23,7 +25,7 @@ const SelectBox = ({
       onPress={() => setSelected(value)}
       style={[
         customStyle,
-        isSelected && { backgroundColor: colors.purple_500 },
+        isSelected && { backgroundColor: selectedColor || colors.purple_500 },
       ]}
     >
       {children}

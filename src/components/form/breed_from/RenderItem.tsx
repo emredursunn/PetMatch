@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Breed } from "../../../types/Ad";
 import SelectBox from "../shared_form_components/SelectBox";
+import { colors } from "../../../utils/constants";
 
 type Props = {
   item: Breed;
@@ -21,9 +22,10 @@ const RenderItem = ({ item, selectedValue, setSelectedValue }: Props) => {
       <Text
         style={{
           margin: 4,
-          fontSize: 12,
+          fontSize: 14,
           fontWeight: "600",
           textAlign: "center",
+          color: item.name === selectedValue ? colors.white : colors.black
         }}
         numberOfLines={1}
       >
@@ -40,9 +42,10 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 8,
     borderRadius: 8,
-    margin: 4,
+    marginVertical:4,
     backgroundColor: "#fff",
     alignItems: "flex-start",
     paddingLeft: 24,
+    shadowColor:colors.transparent
   },
 });

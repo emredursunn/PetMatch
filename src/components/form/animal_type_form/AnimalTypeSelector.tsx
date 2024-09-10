@@ -1,16 +1,11 @@
-import {
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import SelectBox from "../shared_form_components/SelectBox";
 import { FormikErrors } from "formik";
-import { AnimalFormState } from "../../../types/AnimalFormState";
 import LottieView from "lottie-react-native";
 import { animalTypes, colors } from "../../../utils/constants";
 import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
+import { AnimalFormState } from "../../../types/Ad";
 
 type Props = {
   value: any;
@@ -31,7 +26,15 @@ const AnimalTypeSelector = ({ setFieldValue, value, error }: Props) => {
   }, [selected]);
 
   return (
-    <Animated.View style={{width:SCREEN_WIDTH, height:SCREEN_HEIGHT * 0.6, justifyContent:'center'}} entering={SlideInRight} exiting={SlideOutLeft}>
+    <Animated.View
+      style={{
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT * 0.6,
+        justifyContent: "center",
+      }}
+      entering={SlideInRight}
+      exiting={SlideOutLeft}
+    >
       <Text
         style={{
           textAlign: "center",
@@ -41,13 +44,13 @@ const AnimalTypeSelector = ({ setFieldValue, value, error }: Props) => {
           marginVertical: 10,
         }}
       >
-        Çocuğunuzun türü nedir?
+        What type of animal is it?
       </Text>
       <View
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          height:'60%',
+          height: "60%",
           width: "100%",
           justifyContent: "space-evenly",
         }}

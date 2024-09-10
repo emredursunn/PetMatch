@@ -10,9 +10,9 @@ import SelectBox from "../shared_form_components/SelectBox";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FormikErrors } from "formik";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { AnimalFormState } from "../../../types/AnimalFormState";
 import { colors } from "../../../utils/constants";
 import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
+import { AnimalFormState } from "../../../types/Ad";
 
 type Props = {
   value: any;
@@ -26,34 +26,31 @@ type Props = {
 
 const GenderSelector = ({ setFieldValue, value, error }: Props) => {
   const [selectedGender, setSelectedGender] = useState(value);
-  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
 
   useEffect(() => {
     setFieldValue("gender", selectedGender);
   }, [selectedGender]);
 
   return (
-    <Animated.View
-      entering={SlideInRight}
-      exiting={SlideOutLeft}
-      style={{width:SCREEN_WIDTH, height:SCREEN_HEIGHT * 0.6, justifyContent:'center' }}
-    >
+    <Animated.View entering={SlideInRight} exiting={SlideOutLeft}>
       <Text
         style={{
           textAlign: "center",
           fontSize: 36,
+          paddingHorizontal: 8,
           fontWeight: "700",
           letterSpacing: -1,
           marginBottom: 30,
         }}
       >
-        Evcil hayvanınızın cinsiyeti nedir?
+        Choose the gender
       </Text>
       <View
         style={{
           width: "100%",
           flexDirection: "row",
-          justifyContent: "space-around",
+          gap: 16,
+          justifyContent:'center'
         }}
       >
         <SelectBox
@@ -61,15 +58,16 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
           setSelected={setSelectedGender}
           value="male"
           customStyle={styles.selectBtn}
+          selectedColor={colors.blue}
         >
           <Ionicons
             name={"male-sharp"}
             size={48}
-            color={selectedGender === "male" ? colors.white : colors.purple}
+            color={selectedGender === "male" ? colors.white : colors.blue}
           />
           <Text
             style={{
-              color: selectedGender === "male" ? colors.white : colors.purple,
+              color: selectedGender === "male" ? colors.white : colors.blue,
               fontSize: 24,
             }}
           >
@@ -81,15 +79,16 @@ const GenderSelector = ({ setFieldValue, value, error }: Props) => {
           setSelected={setSelectedGender}
           value="female"
           customStyle={styles.selectBtn}
+          selectedColor={colors.pink}
         >
           <Ionicons
             name={"female-sharp"}
             size={48}
-            color={selectedGender === "female" ? colors.white : colors.purple}
+            color={selectedGender === "female" ? colors.white : colors.pink}
           />
           <Text
             style={{
-              color: selectedGender === "female" ? colors.white : colors.purple,
+              color: selectedGender === "female" ? colors.white : colors.pink,
               fontSize: 24,
             }}
           >

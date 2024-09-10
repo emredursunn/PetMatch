@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FormikErrors } from "formik";
 import { catColors } from "../../../utils/constants";
-import { AnimalFormState, Color } from "../../../types/AnimalFormState";
 import ColorItem from "./ColorItem";
+import { AnimalFormState, Color } from "../../../types/Ad";
 
 type Props = {
   value: Color[];
@@ -25,7 +25,7 @@ const ColorSelector = ({ value, setFieldValue, error }: Props) => {
 
   return (
     <View>
-      <Text style={{fontSize:20, fontWeight:'bold', marginVertical:24}}>Renk</Text>
+      <Text style={{fontSize:20, fontWeight:'bold', marginVertical:12}}>Color</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap:'wrap' }}>
         {catColors.map((color, index) => (
           <ColorItem

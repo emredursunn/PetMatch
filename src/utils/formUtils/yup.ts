@@ -30,14 +30,14 @@ export const validationSchema = Yup.object().shape({
         .required("Colors are required"),
     otherwise: (schema) => schema.notRequired(),
   }),
-  photos: Yup.array()
+  images: Yup.array()
     .of(Yup.string())
     .when("step", {
       is: 5,
       then: (schema) =>
         schema
           .min(1, "At least one photo is required")
-          .required("Photos are required"),
+          .required("images are required"),
       otherwise: (schema) => schema.notRequired(),
     }),
 

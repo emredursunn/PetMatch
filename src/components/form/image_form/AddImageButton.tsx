@@ -13,8 +13,8 @@ const AddImageButton = ({ onPress }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}
       style={{
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         backgroundColor: colors.purple_700,
         alignItems:'center',
         justifyContent:'center',

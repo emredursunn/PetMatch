@@ -12,7 +12,6 @@ import { validationSchema } from "../../utils/formUtils/yup";
 import * as ImagePicker from "expo-image-picker";
 import CustomInput from "./shared_form_components/CustomInput";
 import GenderSelector from "./gender_form/GenderSelector";
-import { AnimalFormState } from "../../types/AnimalFormState";
 import ColorSelector from "./color_form/ColorSelector";
 import { colors } from "../../utils/constants";
 import { showToast } from "../../utils/helperFunctions";
@@ -27,11 +26,13 @@ import AddImageButton from "./image_form/AddImageButton";
 import FormImage from "./image_form/FormImage";
 import Gradient from "../Gradient";
 import FormButtons from "./shared_form_components/FormButtons";
-import { Ad } from "../../types/Ad";
+import { Ad, AnimalFormState } from "../../types/Ad";
 import uuid from "react-native-uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { createAd, updateAd } from "../../store/adSlice";
+import AgeSelector from "./age_form/AgeSelector";
+import LocationSelector from "./location_form/LocationSelector";
 
 type Props = {
   editingAd?: Ad;
@@ -68,6 +69,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
         images: formState.images, // Mapping images to images
         contact: user!.phone, // Default to empty string if not provided
         description: formState.description,
+        location: formState.location,
       } as Ad;
       if (editingAd && setEditingAd) {
         dispatch(updateAd(ad));
@@ -103,6 +105,11 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
           description: editingAd?.description || "",
           colors: editingAd?.colors || [],
           images: editingAd?.images || [],
+          location: editingAd?.location || {
+            city: "",
+            district: "",
+            street: "",
+          }
         } as AnimalFormState
       }
       onSubmit={submit}
@@ -158,7 +165,6 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                       height: "80%",
                       width: "100%",
                       justifyContent: "center",
-                      alignItems: "center",
                     }}
                   >
                     {step === 1 && (
@@ -184,12 +190,15 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                     )}
 
                     {step === 4 && (
-                      <Animated.View
+                      <Animated.ScrollView
                         entering={SlideInRight}
                         exiting={SlideOutLeft}
-                        style={{
+                        contentContainerStyle={{
+                          width: "100%",
+                          padding: 16,
+                          marginTop:36,
+                          gap:16,
                           justifyContent: "center",
-                          padding: 12,
                         }}
                       >
                         <CustomInput
@@ -199,18 +208,25 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                           placeholder="Animal Name"
                           onTouchStart={handleBlur("title")}
                         />
+
+                        <AgeSelector
+                          value={values.age}
+                          setFieldValue={setFieldValue}
+                          error={touched.age && errors.age}
+                        />
+
                         <ColorSelector
                           value={values.colors}
                           setFieldValue={setFieldValue}
                           error={touched.colors && errors.colors}
                         />
-                      </Animated.View>
+                      </Animated.ScrollView>
                     )}
 
                     {step === 5 && (
                       <Animated.ScrollView
                         entering={SlideInRight}
-                        exiting={FadeOut}
+                        exiting={SlideOutLeft}
                         contentContainerStyle={{
                           width: "100%",
                           padding: 10,
@@ -225,7 +241,7 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                             marginVertical: 50,
                           }}
                         >
-                          ÇOKKK AZ KALDI...
+                          The last few steps...
                         </Text>
 
                         <Text
@@ -236,13 +252,14 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                             marginBottom: 5,
                           }}
                         >
-                          Fotoğraf Ekle
+                          Add some photos.
                         </Text>
-                        <ScrollView
-                          showsHorizontalScrollIndicator={false}
-                          horizontal
-                          contentContainerStyle={{
+                        <View
+                          style={{
+                            flexDirection:'row',
+                            flexWrap:'wrap',
                             marginVertical: 8,
+                            gap:10
                           }}
                         >
                           <AddImageButton
@@ -258,28 +275,31 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
                               onRemove={() => removePhoto(index)}
                             />
                           ))}
-                        </ScrollView>
+                        </View>
 
                         <CustomInput
-                          label="Description"
+                          label="Let's Write something about it."
                           value={values.description}
                           onChangeText={handleChange("description")}
                           placeholder="Çok sevecen huylu, oyuncu biir kedidir. Onun yeni kahramanı olur musun?"
                           onTouchStart={handleBlur("description")}
                           multiline
                           numberOfLines={6}
-                          style={{
-                            width: "90%",
-                            backgroundColor: colors.white,
-                            borderRadius: 16,
-                            borderWidth: 1,
-                            borderColor: colors.purple_700,
-                            padding: 12,
+                          inputStyle={{
+                            width: "100%",
+                            height:100
                           }}
                           textAlignVertical="top"
                           error={touched.description && errors.description}
                         />
                       </Animated.ScrollView>
+                    )}
+                    {step === 6 && (
+                      <LocationSelector
+                        value={values.location}
+                        setFieldValue={setFieldValue}
+                        error={touched.location && errors.location}
+                      />
                     )}
                   </View>
 

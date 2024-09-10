@@ -78,11 +78,15 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 60,
-    borderColor: "#ddd",
-    borderWidth: 1,
+    borderColor: colors.purple,
+    borderWidth: 0.5,
     borderRadius: 16,
     paddingHorizontal: 10,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
+    shadowOffset:{width:0,height:2},
+    elevation:10,
+    padding:12,
+    shadowColor:colors.black
   },
   iconContainer: {
     position: "absolute",

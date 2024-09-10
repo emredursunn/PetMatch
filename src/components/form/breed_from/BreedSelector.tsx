@@ -6,9 +6,8 @@ import {
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { Breed } from "../../../types/Ad";
+import { AnimalFormState, Breed } from "../../../types/Ad";
 import { FormikErrors } from "formik";
-import { AnimalFormState } from "../../../types/AnimalFormState";
 import { useInfiniteQuery } from "react-query";
 import { getBreeds } from "../../../services/api";
 import { FlashList } from "@shopify/flash-list";
@@ -83,7 +82,7 @@ const BreedSelector = ({ animalType, value, setFieldValue }: Props) => {
           marginVertical: 20,
         }}
       >
-        CİNSİNİ DE SEÇELİM..
+        Let's choose the breed..
       </Text>
 
       <View
@@ -118,10 +117,16 @@ const styles = StyleSheet.create({
     height: "75%",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
+    borderWidth:2,
+    borderColor:colors.purple,
     borderRadius:40,
     backgroundColor: colors.white,
     alignSelf:'center',
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 4,
+    shadowOffset:{width:2,height:2},
+    shadowColor:colors.black,
+    elevation:10,
   },
 });
 

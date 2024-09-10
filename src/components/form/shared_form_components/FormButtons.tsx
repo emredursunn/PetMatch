@@ -1,18 +1,29 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { showToast, validateStepManually } from "../../../utils/helperFunctions";
-import { AnimalFormState } from "../../../types/AnimalFormState";
+import {
+  showToast,
+  validateStepManually,
+} from "../../../utils/helperFunctions";
 import { colors } from "../../../utils/constants";
+import { AnimalFormState } from "../../../types/Ad";
 
 type Props = {
   step: number;
   values: AnimalFormState;
-  handlePrev: () => void,
-  handleNext: () => void,
-  handleSubmit: () => void,
+  handlePrev: () => void;
+  handleNext: () => void;
+  handleSubmit: () => void;
 };
 
-const FormButtons = ({ step, values,handlePrev,handleNext,handleSubmit }: Props) => (
+const FormButtons = ({
+  step,
+  values,
+  handlePrev,
+  handleNext,
+  handleSubmit,
+}: Props) => (
   <View style={styles.buttonContainer}>
+
+    {/* BACK */}
     {step > 1 && (
       <TouchableOpacity
         style={styles.button}
@@ -23,7 +34,9 @@ const FormButtons = ({ step, values,handlePrev,handleNext,handleSubmit }: Props)
         <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
     )}
-    {step < 5 && (
+
+    {/* NEXT */}
+    {step < 6 && (
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -37,7 +50,9 @@ const FormButtons = ({ step, values,handlePrev,handleNext,handleSubmit }: Props)
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     )}
-    {step === 5 && (
+
+    {/* SUBMIT */}
+    {step === 6 && (
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -57,24 +72,24 @@ const FormButtons = ({ step, values,handlePrev,handleNext,handleSubmit }: Props)
 export default FormButtons;
 
 const styles = StyleSheet.create({
-    buttonContainer: {
-        width: "100%",
-        height:"20%",
-        justifyContent: "space-evenly",
-        flexDirection: "row",
-        alignItems: "center",
-      },
-      button: {
-        height: 70,
-        width: "40%",
-        backgroundColor: colors.purple_500,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 24,
-      },
-      buttonText: {
-        color: colors.white,
-        fontSize: 16,
-        fontWeight: "700",
-      },
-})
+  buttonContainer: {
+    width: "100%",
+    height: "20%",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  button: {
+    height: 60,
+    width: "40%",
+    backgroundColor: colors.purple_500,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 18,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: "700",
+  },
+});
