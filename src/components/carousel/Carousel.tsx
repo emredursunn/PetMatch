@@ -1,15 +1,9 @@
 import {
-  FlatList,
   Image,
-  StyleSheet,
-  Text,
-  View,
   ViewToken,
 } from "react-native";
 import React, { useMemo } from "react";
-import Animated, {
-  SharedValue,
-  useAnimatedScrollHandler,
+import  {
   useSharedValue,
 } from "react-native-reanimated";
 import Pagination from "./Pagination";
@@ -21,10 +15,10 @@ import {
 } from "@gorhom/bottom-sheet";
 
 type Props = {
-  data: string[];
+  images: string[];
 };
 
-const Carousel = ({ data }: Props) => {
+const Carousel = ({ images }: Props) => {
   const currentPageIndex = useSharedValue(0);
   const onViewableItemsChanged = useMemo(() => {
     return ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -40,23 +34,23 @@ const Carousel = ({ data }: Props) => {
       <Image
         key={index}
         source={{ uri: item }}
-        style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 3 }}
-        resizeMode="stretch"
+        style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 2, borderRadius:16 }}
+        resizeMode="cover"
       />
     );
   };
 
   return (
-    <BottomSheetView style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 3 }}>
+    <BottomSheetView style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT / 2 }}>
       <BottomSheetFlatList
-        data={data}
+        data={images}
         renderItem={renderItem}
         horizontal
         pagingEnabled
         onViewableItemsChanged={onViewableItemsChanged}
         showsHorizontalScrollIndicator={false}
       />
-      <Pagination data={data} currentPageIndex={currentPageIndex} />
+      <Pagination data={images} currentPageIndex={currentPageIndex} />
     </BottomSheetView>
   );
 };

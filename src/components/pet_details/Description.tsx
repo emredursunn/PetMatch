@@ -7,12 +7,12 @@ import { makePhoneCall } from "../../utils/helperFunctions";
 import { colors } from "../../utils/constants";
 
 type Props = {
-  data: Ad;
+  ad: Ad;
 };
 
-const Description = ({ data }: Props) => {
+const Description = ({ ad }: Props) => {
   return (
-    <View style={{ paddingTop: 20 }}>
+    <View style={{width:'100%', alignSelf:'center',paddingTop: 20, borderColor:colors.purple_700, borderRadius:16 }}>
       <View
         style={{
           flexDirection: "row",
@@ -31,14 +31,14 @@ const Description = ({ data }: Props) => {
           />
           <Text style={{ fontSize: 18 }}>Emre Dursun</Text>
         </View>
-        <TouchableOpacity onPress={() => makePhoneCall(data.contact)}>
+        <TouchableOpacity onPress={() => makePhoneCall(ad.contact)}>
         <CustomBox>
           <Ionicons name="call-sharp" size={24} color={colors.purple_700} />
         </CustomBox>
         </TouchableOpacity>
       </View>
       <View style={{ padding: 16, paddingTop:40 }}>
-        <Text style={{ fontSize: 18,  }}>{data.description}</Text>
+        <Text style={{ fontSize: 18,  }}>{ad.description}</Text>
       </View>
     </View>
   );

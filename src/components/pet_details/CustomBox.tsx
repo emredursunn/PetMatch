@@ -15,11 +15,11 @@ export default CustomBox;
 
 const styles = StyleSheet.create({
     box:{
-        backgroundColor:colors.fuchsia_800,
+        backgroundColor:colors.bottom_background,
         paddingVertical:6,
         paddingHorizontal:18,
-        borderRadius:20,
+        borderRadius:12,
         alignItems:'center',
-        justifyContent:'center'
+        justifyContent:'center',
     }
 });

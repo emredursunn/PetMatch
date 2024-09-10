@@ -7,10 +7,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { colors } from "../../utils/constants";
 
 type Props = {
-  data: Ad;
+  ad: Ad;
 };
 
-const Header = ({ data }: Props) => {
+const Header = ({ ad }: Props) => {
   return (
     <LinearGradient
       style={{
@@ -38,13 +38,13 @@ const Header = ({ data }: Props) => {
             letterSpacing: -1,
           }}
           >
-          {data.title}
+          {ad.title}
         </Text>
         <CustomBox>
           <Ionicons
-            name={data.gender === "female" ? "female-sharp" : "male-sharp"}
+            name={ad.gender === "female" ? "female-sharp" : "male-sharp"}
             size={20}
-            color={data.gender === "female" ? colors.pink : colors.blue}
+            color={ad.gender === "female" ? colors.pink : colors.blue}
           />
         </CustomBox>
       </View>
