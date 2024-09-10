@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MapView, { Marker, Region } from "react-native-maps";
 import * as Location from "expo-location";
 import { colors, defaultRegion } from "../utils/constants";

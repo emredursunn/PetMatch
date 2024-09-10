@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import {  StyleSheet, Text,  } from "react-native";
+import React from "react";
 import { Breed } from "../../../types/Ad";
 import SelectBox from "../shared_form_components/SelectBox";
 import { colors } from "../../../utils/constants";

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text,  } from "react-native";
 import CustomInput from "../shared_form_components/CustomInput";
 import { FormikErrors } from "formik";
 import { AnimalFormState, ILocation } from "../../../types/Ad";

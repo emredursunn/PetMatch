@@ -1,5 +1,4 @@
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +7,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import CustomInput from "../../components/form/shared_form_components/CustomInput";
-import CustomBox from "../../components/pet_details/CustomBox";
 import { colors } from "../../utils/constants";
 import Gradient from "../../components/Gradient";
 import ConnectButtons from "../../components/auth/ConnectButtons";

@@ -1,5 +1,5 @@
 import { forwardRef, useMemo } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -11,7 +11,7 @@ import Description from "./pet_details/Description";
 import { makePhoneCall } from "../utils/helperFunctions";
 import { colors } from "../utils/constants";
 import Header from "./pet_details/Header";
-import { Easing, ReduceMotion } from "react-native-reanimated";
+import { Easing } from "react-native-reanimated";
 import { Ad } from "../types/Ad";
 
 type Props = {

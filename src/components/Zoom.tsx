@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { forwardRef } from "react";
-import MapView, { Region } from "react-native-maps";
+import React from "react";
+import  { Region } from "react-native-maps";
 import { colors } from "../utils/constants";
 
 type Props = {

@@ -3,8 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { auth, db } from "../../../firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import { auth } from "../../../firebaseConfig";
 import { showToast } from "../../utils/helperFunctions";
 import { IUser } from "../../types/IUser";
 import { createUser } from "./dbService";

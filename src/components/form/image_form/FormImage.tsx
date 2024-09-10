@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Image, StyleSheet , TouchableWithoutFeedback, View } from "react-native";
 import React from "react";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { colors } from "../../../utils/constants";

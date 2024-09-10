@@ -3,7 +3,6 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
-  ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
@@ -13,12 +12,10 @@ import * as ImagePicker from "expo-image-picker";
 import CustomInput from "./shared_form_components/CustomInput";
 import GenderSelector from "./gender_form/GenderSelector";
 import ColorSelector from "./color_form/ColorSelector";
-import { colors } from "../../utils/constants";
 import { showToast } from "../../utils/helperFunctions";
 import BreedSelector from "./breed_from/BreedSelector";
 import AnimalTypeSelector from "./animal_type_form/AnimalTypeSelector";
 import Animated, {
-  FadeOut,
   SlideInRight,
   SlideOutLeft,
 } from "react-native-reanimated";

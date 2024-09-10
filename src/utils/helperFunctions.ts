@@ -1,4 +1,4 @@
-import { Alert, DimensionValue, Linking, Platform } from "react-native";
+import {  Linking, Platform } from "react-native";
 import { LatLng } from "react-native-maps";
 import Toast, { ToastType } from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";

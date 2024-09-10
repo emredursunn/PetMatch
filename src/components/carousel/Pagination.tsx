@@ -1,6 +1,6 @@
-import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import { SharedValue, useAnimatedStyle } from "react-native-reanimated";
+import { SharedValue } from "react-native-reanimated";
 import Dot from "./Dot";
 
 type Props = {

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Breed } from "../types/Ad";
 
 export const getBreeds = async (animalType: string, pageParam: number) => {
   const api =

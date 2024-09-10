@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { MyTabs } from "./TabNavigator";
 import { AuthStack } from "./AuthStack";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { signIn } from "../store/authSlice";

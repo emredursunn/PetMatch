@@ -1,15 +1,12 @@
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
-  useWindowDimensions,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import SelectBox from "../shared_form_components/SelectBox";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FormikErrors } from "formik";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { colors } from "../../../utils/constants";
 import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 import { AnimalFormState } from "../../../types/Ad";

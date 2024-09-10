@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colors } from '../../../utils/constants';
 
 const SkeletonItem = () => (
   <View style={styles.skeletonContainer}>
