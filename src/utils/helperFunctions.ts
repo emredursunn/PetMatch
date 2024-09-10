@@ -1,8 +1,9 @@
 import { Alert, DimensionValue, Linking, Platform } from "react-native";
 import { LatLng } from "react-native-maps";
-import { AnimalFormState } from "../types/AnimalFormState";
 import Toast, { ToastType } from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Ad, AnimalFormState, Cluster } from "../types/Ad";
 
 export const makePhoneCall = (phone: string) => {
   console.log("callNumber ----> ", phone);
@@ -59,9 +60,11 @@ export const validateStepManually = (step: number, values: AnimalFormState) => {
     case 3:
       return !!values.gender;
     case 4:
-      return !!values.title && values.colors.length > 0;
+      return !!values.title.trim() && !!values.age && values.colors.length > 0;
     case 5:
-      return values.images.length > 0 && values.description.trim().length > 0;
+      return values.images.length > 0 && values.description.trim().length > 0 
+    case 6:
+      return !!values.location.city.trim() && !!values.location.district.trim() && !!values.location.street.trim() 
     default:
       return false;
   }
@@ -107,4 +110,49 @@ export const removeFromStorage = async (key:string) => {
   } catch (error) {
     console.error('Error removing token', error);
   }
+};
+
+export const getCoordinates = async (address:string) => {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  try {
+    const response = await axios.get(url);
+    if (response.data.status === 'OK') {
+      const { lat, lng } = response.data.results[0].geometry.location;
+      return { latitude: lat, longitude: lng };
+    } else {
+      throw new Error('Geocoding API Error: ' + response.data.status);
+    }
+  } catch (error) {
+    console.error('Error fetching coordinates:', error);
+    throw error;
+  }
+};
+
+export const groupAdsByDistance = (ads : Ad[], maxDistance:number) => {
+  const clusters : Cluster[] = [];
+  const usedAds = new Set<Ad>();
+
+  ads.forEach((ad, index) => {
+    if (usedAds.has(ad)) return;
+
+    const cluster = {
+      latitude: ad.location.coordinates.latitude,
+      longitude: ad.location.coordinates.longitude,
+      ads: [ad],
+    };
+
+    ads.forEach((otherAd, otherIndex) => {
+      if (index !== otherIndex && !usedAds.has(otherAd)) {
+        const dist = distance(ad.location.coordinates, otherAd.location.coordinates);
+        if (dist <= maxDistance) {
+          cluster.ads.push(otherAd);
+          usedAds.add(otherAd);
+        }
+      }
+    });
+
+    clusters.push(cluster);
+  });
+
+  return clusters;
 };

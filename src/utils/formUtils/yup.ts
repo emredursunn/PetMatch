@@ -22,6 +22,12 @@ export const validationSchema = Yup.object().shape({
       schema.max(16, "Title is too long").required("Title is required"),
     otherwise: (schema) => schema.notRequired(),
   }),
+  age: Yup.string().when("step", {
+    is: 4,
+    then: (schema) =>
+      schema.required("Title is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   colors: Yup.array().when("step", {
     is: 4,
     then: (schema) =>
@@ -44,6 +50,11 @@ export const validationSchema = Yup.object().shape({
   description: Yup.string().when("step", {
     is: 5,
     then: (schema) => schema.required("Description is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  location: Yup.object().when("step", {
+    is: 6,
+    then: (schema) => schema.required("Address is required"),
     otherwise: (schema) => schema.notRequired(),
   }),
 });

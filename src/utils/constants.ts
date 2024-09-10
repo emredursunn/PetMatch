@@ -1,10 +1,10 @@
 import { Region } from "react-native-maps";
 
 export const defaultRegion: Region = {
-  latitude: 37.78825,
-  longitude: -122.4324,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
+  latitude: 41.043869,
+  longitude: 29.012890,
+  latitudeDelta: 0.5,   // Increased from 0.0822 to 0.5
+  longitudeDelta: 0.25, // Increased from 0.0421 to 0.25
 };
 
 export const catColors = [
@@ -35,26 +35,26 @@ export const colors = {
 
 export const animalTypes = {
   cat: {
-    name: "Kedi",
+    name: "Cat",
     backgroundColor: "yellow",
     lottie:
       "https://lottie.host/93101278-06c3-4cd1-a7cf-8e3a8d8f317c/AzKTtZZolK.json",
   },
   dog: {
-    name: "Köpek",
+    name: "Dog",
     backgroundColor: "yellow",
     lottie:
       "https://lottie.host/f68099d9-09b9-4367-909e-45b665251783/ROs9qvbnOf.json",
   },
   bird: {
-    name: "Kuş",
+    name: "Bird",
     backgroundColor: "yellow",
     lottie:
       "https://lottie.host/1d5b4b88-39ef-43ce-9b13-a5b43b036f1a/iP15hfxdqT.json",
   },
 
   other: {
-    name: "Diğer",
+    name: "Other",
     backgroundColor: "yellow",
     lottie:
       "https://lottie.host/60c74f6e-d0fb-4053-99e5-0d6bf860a390/mgasF929Ce.json",
