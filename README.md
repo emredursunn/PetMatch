@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/629fc025-bb9a-45b8-a92d-d0e7515f1c10
 
 #### Look for your dream pet in map.
  
-#### Edit your ad easiliy.
+#### Edit your ad easily.
 
 ---
 
