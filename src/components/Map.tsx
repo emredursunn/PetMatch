@@ -11,7 +11,7 @@ type Props = {
   currentLocation?: Location.LocationObject;
   ads: Ad[];
   handleAdPress: (ad: Ad) => void;
-  handleRefresh : () => void
+  handleRefresh: () => void;
 };
 
 const Map = ({ currentLocation, ads, handleAdPress, handleRefresh }: Props) => {
@@ -66,11 +66,7 @@ const Map = ({ currentLocation, ads, handleAdPress, handleRefresh }: Props) => {
             }
           >
             {cluster.ads.length > 1 ? (
-              <View
-                style={[
-                  styles.clusterMarker,
-                ]}
-              >
+              <View style={[styles.clusterMarker]}>
                 <Text style={styles.clusterText}>{cluster.ads.length}</Text>
               </View>
             ) : (
@@ -83,7 +79,11 @@ const Map = ({ currentLocation, ads, handleAdPress, handleRefresh }: Props) => {
           </Marker>
         ))}
       </MapView>
-      <Zoom region={region} setRegion={setRegion} handleRefresh={handleRefresh} />
+      <Zoom
+        region={region}
+        setRegion={setRegion}
+        handleRefresh={handleRefresh}
+      />
     </View>
   );
 };
