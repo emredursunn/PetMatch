@@ -1,39 +1,51 @@
 import { Image, TouchableOpacity, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { colors } from "../../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { Ad } from "../../types/Ad";
-import { deleteAdById, fetchAdsByIds } from "../../store/adSlice";
 import Animated, { FadeOutUp, SlideInLeft } from "react-native-reanimated";
 import { showToast } from "../../utils/helperFunctions";
 import MultiStepForm from "../../components/form/MultiStepForm";
 import { ScrollView } from "react-native-gesture-handler";
 import Gradient from "../../components/Gradient";
 import { LoadingScreen } from "../../components/Loading";
-import Feather from '@expo/vector-icons/Feather';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Feather from "@expo/vector-icons/Feather";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  deleteAdById,
+  fetchAdsByIds,
+} from "../../services/firebaseService/dbService";
 
 const Ads = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
-  const {ads,loading,error} = useSelector((state: RootState) => state.ads);
   const [editingAd, setEditingAd] = useState<Ad | null>(null);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (user && user.adIds.length > 0 && ads.length === 0) {
-      console.log(ads)
-      console.log(ads.length)
-      console.log(user.adIds)
-      dispatch(fetchAdsByIds(user.adIds));
+  const {
+    data: ads,
+    isFetching,
+    error,
+  } = useQuery(["ads", user?.adIds], () => fetchAdsByIds(user?.adIds || []), {
+    enabled: !!user,
+  });
+
+  const deleteMutation = useMutation(
+    (adId: string) => deleteAdById({ adId: adId, userId: user!.uid }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("ads");
+        showToast("info", "Ad is deleted", "");
+      },
     }
-  }, [user]);
-
-  const handleDeleteAd = (adId: string) => {
-    if (user) {
-      dispatch(deleteAdById({ adId, userId: user.uid })).then(() => {
-        showToast("info", "İlan Silindi", "");
-      });
+  );
+  const handleDeleteAd = async (adId: string) => {
+    try {
+      await deleteMutation.mutateAsync(adId);
+    } catch (error) {
+      console.error(error);
+      showToast("error", "Error", "Try again")
     }
   };
 
@@ -69,8 +81,8 @@ const Ads = () => {
         <View
           style={{
             flexDirection: "row",
-            alignSelf:'center',
-            gap:16,
+            alignSelf: "center",
+            gap: 16,
           }}
         >
           <TouchableOpacity
@@ -101,22 +113,28 @@ const Ads = () => {
   };
   return (
     <>
-    {!loading ?
-    <Gradient>
-      {!editingAd ? (
-        <ScrollView contentContainerStyle={{flexGrow:1,marginTop:36, paddingBottom:200}}>
-          {ads.map((ad, index) => (
-            <RenderItem key={ad.id} item={ad} index={index} />
-          ))}
-        </ScrollView>
+      {!isFetching ? (
+        <Gradient>
+          {!editingAd ? (
+            <ScrollView
+              contentContainerStyle={{
+                flexGrow: 1,
+                marginTop: 36,
+                paddingBottom: 200,
+              }}
+            >
+              {ads?.map((ad, index) => (
+                <RenderItem key={ad.id} item={ad} index={index} />
+              ))}
+            </ScrollView>
+          ) : (
+            <MultiStepForm editingAd={editingAd} setEditingAd={setEditingAd} />
+          )}
+        </Gradient>
       ) : (
-        <MultiStepForm editingAd={editingAd} setEditingAd={setEditingAd} />
+        <LoadingScreen />
       )}
-    </Gradient>
-    :
-      <LoadingScreen />
-    }
-      </>
+    </>
   );
 };
 

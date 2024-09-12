@@ -22,12 +22,14 @@ import Gradient from "../Gradient";
 import FormButtons from "./shared_form_components/FormButtons";
 import { Ad, AnimalFormState } from "../../types/Ad";
 import uuid from "react-native-uuid";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
-import { createAd, updateAd } from "../../store/adSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import AgeSelector from "./age_form/AgeSelector";
 import LocationSelector from "./location_form/LocationSelector";
 import { colors } from "../../utils/constants";
+import { useMutation, useQueryClient } from "react-query";
+import { createAd, updateAd } from "../../services/firebaseService/dbService";
+import { LoadingScreen } from "../Loading";
 
 type Props = {
   editingAd?: Ad;
@@ -37,11 +39,30 @@ type Props = {
 const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
   const [step, setStep] = useState(1);
   const user = useSelector((state: RootState) => state.auth.user);
-  const dispatch = useDispatch<AppDispatch>();
+  const queryClient = useQueryClient();
   const handlePrev = () => {
     setStep((prev) => prev - 1);
   };
 
+  const createAdMutation = useMutation(createAd, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["ads"]);
+      showToast("success", "Success", "Ad is created successfully", 8000);
+    },
+    onError: (error: any) => {
+      showToast("error", "Error", error.message);
+    },
+  });
+
+  const updateAdMutation = useMutation(updateAd, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["ads"]);
+      showToast("success", "Success", "Ad is updated successfully", 5000);
+    },
+    onError: (error: any) => {
+      showToast("error", "Error", error.message);
+    },
+  });
   const handleNext = () => {
     setStep((prev) => prev + 1);
   };
@@ -67,12 +88,10 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
         location: formState.location,
       } as Ad;
       if (editingAd && setEditingAd) {
-        dispatch(updateAd(ad));
-        showToast("success", "Success", "Ad is updated succesfully", 5000);
+        await updateAdMutation.mutateAsync(ad);
         setEditingAd(null);
       } else {
-        dispatch(createAd(ad));
-        showToast("success", "Success", "Ad is created succesfully", 8000);
+        await createAdMutation.mutateAsync(ad);
       }
       resetForm();
       setStep(1);
@@ -82,7 +101,9 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
     }
   };
 
-  return (
+  return createAdMutation.isLoading || updateAdMutation.isLoading ? (
+    <LoadingScreen />
+  ) : (
     <Formik
       initialValues={
         {
@@ -145,151 +166,148 @@ const MultiStepForm = ({ editingAd, setEditingAd }: Props) => {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <KeyboardAvoidingView style={{ flex: 1 }}>
               <Gradient>
-                    {/* BUTTONS */}
-                    <FormButtons
-                      step={step}
-                      values={values}
-                      handlePrev={handlePrev}
-                      handleNext={handleNext}
-                      handleSubmit={handleSubmit}
+                {/* BUTTONS */}
+                <FormButtons
+                  step={step}
+                  values={values}
+                  handlePrev={handlePrev}
+                  handleNext={handleNext}
+                  handleSubmit={handleSubmit}
+                />
+                {step === 1 && (
+                  <AnimalTypeSelector
+                    setFieldValue={setFieldValue}
+                    value={values.animalType}
+                  />
+                )}
+
+                {step === 2 && (
+                  <BreedSelector
+                    animalType={values.animalType}
+                    value={values.breed}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+
+                {step === 3 && (
+                  <GenderSelector
+                    value={values.gender}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+
+                {step === 4 && (
+                  <Animated.ScrollView
+                    entering={SlideInRight}
+                    exiting={SlideOutLeft}
+                    contentContainerStyle={{
+                      width: "100%",
+                      padding: 16,
+                      paddingTop: 36,
+                      paddingBottom: 200,
+                      gap: 16,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <CustomInput
+                      label="Name"
+                      value={values.title}
+                      onChangeText={handleChange("title")}
+                      placeholder="Animal Name"
+                      onTouchStart={handleBlur("title")}
                     />
-                    {step === 1 && (
-                      <AnimalTypeSelector
-                        setFieldValue={setFieldValue}
-                        value={values.animalType}
-                      />
-                    )}
 
-                    {step === 2 && (
-                      <BreedSelector
-                        animalType={values.animalType}
-                        value={values.breed}
-                        setFieldValue={setFieldValue}
-                      />
-                    )}
+                    <AgeSelector
+                      value={values.age}
+                      setFieldValue={setFieldValue}
+                      error={touched.age && errors.age}
+                    />
 
-                    {step === 3 && (
-                      <GenderSelector
-                        value={values.gender}
-                        setFieldValue={setFieldValue}
-                      />
-                    )}
+                    <ColorSelector
+                      value={values.colors}
+                      setFieldValue={setFieldValue}
+                      error={touched.colors && errors.colors}
+                    />
+                  </Animated.ScrollView>
+                )}
 
-                    {step === 4 && (
-                      <Animated.ScrollView
-                        entering={SlideInRight}
-                        exiting={SlideOutLeft}
-                        contentContainerStyle={{
-                          width: "100%",
-                          padding: 16,
-                          paddingTop: 36,
-                          paddingBottom: 200,
-                          gap: 16,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <CustomInput
-                          label="Name"
-                          value={values.title}
-                          onChangeText={handleChange("title")}
-                          placeholder="Animal Name"
-                          onTouchStart={handleBlur("title")}
+                {step === 5 && (
+                  <Animated.ScrollView
+                    entering={SlideInRight}
+                    exiting={SlideOutLeft}
+                    contentContainerStyle={{
+                      width: "100%",
+                      padding: 10,
+                      paddingBottom: 150,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 32,
+                        fontWeight: "700",
+                        textAlign: "center",
+                        marginVertical: 50,
+                      }}
+                    >
+                      The last few steps...
+                    </Text>
+
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        color: colors.black,
+                        marginBottom: 5,
+                      }}
+                    >
+                      Add some photos.
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        flexWrap: "wrap",
+                        marginVertical: 8,
+                        gap: 10,
+                      }}
+                    >
+                      <AddImageButton key={"add-image"} onPress={pickImage} />
+
+                      {values.images.map((image, index) => (
+                        <FormImage
+                          key={index}
+                          imgUri={image}
+                          index={index}
+                          onRemove={() => removePhoto(index)}
                         />
+                      ))}
+                    </View>
 
-                        <AgeSelector
-                          value={values.age}
-                          setFieldValue={setFieldValue}
-                          error={touched.age && errors.age}
-                        />
-
-                        <ColorSelector
-                          value={values.colors}
-                          setFieldValue={setFieldValue}
-                          error={touched.colors && errors.colors}
-                        />
-                      </Animated.ScrollView>
-                    )}
-
-                    {step === 5 && (
-                      <Animated.ScrollView
-                        entering={SlideInRight}
-                        exiting={SlideOutLeft}
-                        contentContainerStyle={{
-                          width: "100%",
-                          padding: 10,
-                          paddingBottom:150,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 32,
-                            fontWeight: "700",
-                            textAlign: "center",
-                            marginVertical: 50,
-                          }}
-                        >
-                          The last few steps...
-                        </Text>
-
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            color: colors.black,
-                            marginBottom: 5,
-                          }}
-                        >
-                          Add some photos.
-                        </Text>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            width:'100%',
-                            flexWrap: "wrap",
-                            marginVertical: 8,
-                            gap: 10,
-                          }}
-                        >
-                          <AddImageButton
-                            key={"add-image"}
-                            onPress={pickImage}
-                          />
-
-                          {values.images.map((image, index) => (
-                            <FormImage
-                              key={index}
-                              imgUri={image}
-                              index={index}
-                              onRemove={() => removePhoto(index)}
-                            />
-                          ))}
-                        </View>
-
-                        <CustomInput
-                          label="Let's Write something about it."
-                          value={values.description}
-                          onChangeText={handleChange("description")}
-                          placeholder="Çok sevecen huylu, oyuncu biir kedidir. Onun yeni kahramanı olur musun?"
-                          onTouchStart={handleBlur("description")}
-                          multiline
-                          numberOfLines={6}
-                          inputStyle={{
-                            width: "100%",
-                            height: 100,
-                          }}
-                          textAlignVertical="top"
-                          error={touched.description && errors.description}
-                        />
-                      </Animated.ScrollView>
-                    )}
-                    {step === 6 && (
-                      <LocationSelector
-                        value={values.location}
-                        setFieldValue={setFieldValue}
-                        error={touched.location && errors.location}
-                      />
-                    )}
+                    <CustomInput
+                      label="Let's Write something about it."
+                      value={values.description}
+                      onChangeText={handleChange("description")}
+                      placeholder="Çok sevecen huylu, oyuncu biir kedidir. Onun yeni kahramanı olur musun?"
+                      onTouchStart={handleBlur("description")}
+                      multiline
+                      numberOfLines={6}
+                      inputStyle={{
+                        width: "100%",
+                        height: 100,
+                      }}
+                      textAlignVertical="top"
+                      error={touched.description && errors.description}
+                    />
+                  </Animated.ScrollView>
+                )}
+                {step === 6 && (
+                  <LocationSelector
+                    value={values.location}
+                    setFieldValue={setFieldValue}
+                    error={touched.location && errors.location}
+                  />
+                )}
               </Gradient>
             </KeyboardAvoidingView>
           </TouchableWithoutFeedback>
