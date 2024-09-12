@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import adReducer from './adSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    ads: adReducer, 
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
