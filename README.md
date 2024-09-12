@@ -42,7 +42,7 @@ https://github.com/user-attachments/assets/629fc025-bb9a-45b8-a92d-d0e7515f1c10
 
 **Redux Toolkit** - for state management
 
-**React Query** - for fetch data from API
+**React Query** - for fetch and change data.
 
 **react-native-reanimated** - for animations
 
